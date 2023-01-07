@@ -1,17 +1,10 @@
-name: CI
+name: Test Action
 on:
-  push:
-    branches:
-      - "main"
-    paths-ignore:
-      - '**.md'
-  pull_request:
-    paths-ignore:
-      - '**.md'
+  workflow_dispatch:
 
 jobs:
-  lint-and-check:
-    name: Lint & Type Check
+  build-and-test:
+    name: Build & Run Action
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.event.head_commit.message, 'wip:') }}
     steps:
@@ -25,6 +18,8 @@ jobs:
       - name: Install Dependencies
         run: yarn
       - name: Lint Action
-        run: yarn lint
-      - name: Type Check Action
-        run: yarn build --noEmit
+        run: yarn lint --output-file eslint_report.json --format json
+      - name: Build Action
+        run: yarn build --outDir dist
+      - name: Test Action
+        uses: ./

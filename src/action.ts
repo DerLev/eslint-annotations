@@ -1,3 +1,8 @@
+import * as core from '@actions/core'
+import * as fs from 'fs'
+
 (() => {
-  // code here
+  core.notice('This is a test', {
+    title: 'Hello World!'
+  })
 })()
