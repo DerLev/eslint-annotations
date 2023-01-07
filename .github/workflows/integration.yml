@@ -1,6 +1,8 @@
 name: CI
 on:
   push:
+    branches:
+      - "main"
     paths-ignore:
       - '**.md'
   pull_request:
@@ -9,7 +11,7 @@ on:
 
 jobs:
   lint-and-build:
-    name: Lint & Build
+    name: Lint & Type Check
     runs-on: ubuntu-latest
     if: ${{ !startsWith(github.event.head_commit.message, 'wip:') }}
     steps:
