@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  lint-and-build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.head_commit.message, 'wip:') }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Setup Nodejs environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+      - name: Install Dependencies
+        run: yarn
+      - name: Lint Action
+        run: yarn lint
+      - name: Type Check Action
+        run: yarn build --noEmit

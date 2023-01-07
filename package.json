@@ -6,5 +6,25 @@
   "repository": "https://github.com/DerLev/eslint-annotations",
   "author": "DerLev <levin.schroeren@gmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "run:dev": "node build/action.js",
+    "run": "node dist/action.js",
+    "dev": "concurrently -k -c #3178c6,#4b32c3 -n tsc,eslint yarn:dev:tsc yarn:dev:esl",
+    "dev:tsc": "tsc -w",
+    "dev:esl": "esw -w . --ext .ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
+    "concurrently": "^7.6.0",
+    "eslint": "^8.31.0",
+    "eslint-watch": "^8.0.0",
+    "typescript": "^4.9.4"
+  }
 }
