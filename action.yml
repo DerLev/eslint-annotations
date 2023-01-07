@@ -1,0 +1,8 @@
+name: eslint-annotations
+description: Annotates Code directly in GitHub with output of ESLint
+runs:
+  using: 'node16'
+  main: 'dist/action.js'
+branding:
+  color: 'green'
+  icon: 'check'
