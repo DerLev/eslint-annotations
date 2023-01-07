@@ -1,0 +1,10 @@
+{
+  "name": "eslint-annotations",
+  "version": "1.0.0",
+  "description": "A GitHub Action for adding annotations to files with eslint warnings or errors",
+  "main": "dist/action.js",
+  "repository": "https://github.com/DerLev/eslint-annotations",
+  "author": "DerLev <levin.schroeren@gmail.com>",
+  "license": "MIT",
+  "private": true
+}
