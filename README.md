@@ -122,7 +122,7 @@ documentation are always welcome.
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `latest`  | **npm**         | :white_check_mark:   |
+| `v1.0.1`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>latest` | *any*           | :x:                  |
+| `>v1.0.1` | *any*           | :x:                  |
