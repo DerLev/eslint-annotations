@@ -8,6 +8,7 @@
     "checkJs": false,
     "resolveJsonModule": true,
     "baseUrl": "src",
+    "module": "ES2020"
   },
   "include": ["src/**/*", "types/**/*"],
   "exclude": ["node_modules"]
