@@ -29,3 +29,4 @@ jobs:
           default_author: github_actions
           message: 'Workflow: Build action'
           pathspec_error_handling: exitAtEnd
+          new_branch: gh-actions/build-${{ github.run_number }}-${{ github.run_attempt }}
