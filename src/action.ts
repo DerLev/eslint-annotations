@@ -113,9 +113,11 @@ const typescriptAnnotations = async (inputFile: string) => {
       await typescriptAnnotations(typescriptFile)
       core.endGroup()
     }
-    
-    console.log(failStatus, errorOnWarn, (errorOnWarn ? 1 : 2))
-    if(failStatus >= (errorOnWarn ? 1 : 2)) process.exit(1)
+
+    if(failStatus >= (errorOnWarn ? 1 : 2)) {
+      console.log('threshold passed')
+      process.exit(1)
+    }
   } catch (err) {
     core.error(String(err), { title: 'Error reading file' })
     process.exit(1)
