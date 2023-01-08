@@ -91,7 +91,7 @@ const typescriptAnnotations = async (inputFile: string) => {
   const typescriptInput = process.env.NODE_ENV === 'development' ?
     'typescript.log' :
     core.getInput('typescript-log')
-  const errorOnWarn = Boolean(core.getInput('error-on-warn'))
+  const errorOnWarn = Boolean(core.getInput('error-on-warn')) ? 1 : 2
 
   const GITHUB_WORKSPACE = !process.env.GITHUB_WORKSPACE ?
     '/home/runner/work/eslint-annotations/eslint-annotations' :
@@ -114,7 +114,7 @@ const typescriptAnnotations = async (inputFile: string) => {
       core.endGroup()
     }
 
-    if(failStatus >= (errorOnWarn ? 1 : 2)) {
+    if(failStatus >= errorOnWarn) {
       console.log('threshold passed')
       process.exit(1)
     }
