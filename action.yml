@@ -1,8 +1,21 @@
 name: eslint-annotations
 description: Annotates Code directly in GitHub with output of ESLint
+
+inputs:
+  eslint-report:
+    description: Location of the ESLint report file
+    default: ''
+  typescript-log:
+    description: Location of the Typescript log file
+    default: ''
+  error-on-warn:
+    description: Whether the action should fail when ESLint only throws a warn
+    default: 'false'
+
 runs:
   using: 'node16'
   main: 'dist/action.js'
+
 branding:
   color: 'green'
   icon: 'check'

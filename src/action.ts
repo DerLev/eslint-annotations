@@ -1,10 +1,23 @@
 import * as core from '@actions/core'
-import * as fs from 'fs'
+import * as fs from 'fs/promises'
+import path from 'path'
 
 (async () => {
-  const eslintOutput = JSON.parse(fs.readFileSync('./eslint_report.json').toString())
-  console.log(JSON.stringify(eslintOutput, null, 2))
+  const eslintInput = core.getInput('eslint-report')
+  const typescriptInput = core.getInput('typescript-log')
+  const errorOnWarn = Boolean(core.getInput('error-on-warn'))
 
-  let number: number
-  number = "String"
+  try {
+    if(eslintInput) {
+      const eslintFile = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
+      console.log(eslintFile)
+    }
+    if(typescriptInput) {
+      const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
+      console.log(typescriptFile)
+    }
+  } catch (err) {
+    core.error(String(err), { title: 'Error reading file' })
+    process.exit(1)
+  }
 })()
