@@ -23,8 +23,12 @@ jobs:
         run: yarn tsc > typescript.log
       - name: Build Action
         run: yarn build
+      - name: Move node_modules temp
+        run: mv node_modules node_modules_temp
       - name: Test Action
         uses: ./
         with:
           eslint-report: eslint_report.json
           typescript-log: typescript.log
+      - name: Move node_modules back
+        run: mv node_modules_temp node_modules
