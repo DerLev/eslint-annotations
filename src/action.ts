@@ -39,7 +39,7 @@ const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string) => {
   })
 
   const highestSeverity = (() => {
-    let highest: number = 0
+    let highest = 0
 
     filteredReport.map((item) => {
       if(item == false) return
