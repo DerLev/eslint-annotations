@@ -9,7 +9,7 @@ interface AnnotationConfig {
 }
 
 // this will throw a warning
-let number = 0
+const number = 0
 
 const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, config: AnnotationConfig) => {
   const filteredReport = inputFile.map((item) => {
