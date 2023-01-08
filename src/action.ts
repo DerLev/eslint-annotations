@@ -4,10 +4,11 @@ import path from 'path'
 
 let failStatus = 0
 
-// this will generate an eslint warning
-let number: number
+interface AnnotationConfig {
+  prefix: string
+}
 
-const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string) => {
+const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, config: AnnotationConfig) => {
   const filteredReport = inputFile.map((item) => {
     if(!item.messages.length) return false
 
@@ -22,14 +23,14 @@ const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string) => {
     item.messages.map((msg) => {
       if(msg.severity == 2) {
         core.error(msg.message, {
-          title: 'ESLint Rule: ' + msg.ruleId,
+          title: config.prefix + ' ' + msg.ruleId,
           file: item.file,
           startLine: msg.line,
           endLine: msg.endLine
         })
       } else {
         core.warning(msg.message, {
-          title: 'ESLint Rule: ' + msg.ruleId,
+          title: config.prefix + ' ' + msg.ruleId,
           file: item.file,
           startLine: msg.line,
           endLine: msg.endLine
@@ -54,7 +55,7 @@ const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string) => {
   failStatus = highestSeverity
 }
 
-const typescriptAnnotations = async (inputFile: string) => {
+const typescriptAnnotations = async (inputFile: string, config: AnnotationConfig) => {
   const fileArray = inputFile.split('\n')
 
   const tsErrors = fileArray.filter((item) => item.includes(': error TS'))
@@ -74,7 +75,7 @@ const typescriptAnnotations = async (inputFile: string) => {
   
   formattedErrors.map((error) => {
     core.error(error.message, {
-      title: 'Typescript error: ' + error.error,
+      title: config.prefix + ' ' + error.error,
       file: error.file,
       startLine: error.line,
       endLine: error.line
@@ -93,6 +94,9 @@ const typescriptAnnotations = async (inputFile: string) => {
     core.getInput('typescript-log')
   const errorOnWarn = core.getInput('error-on-warn') === 'true' ? 1 : 2
 
+  const eslintPrefix = core.getInput('eslint-annotation-prefix')
+  const typescriptPrefix = core.getInput('typescript-annotation-prefix')
+
   const GITHUB_WORKSPACE = !process.env.GITHUB_WORKSPACE ?
     '/home/runner/work/eslint-annotations/eslint-annotations' :
     process.env.GITHUB_WORKSPACE
@@ -104,13 +108,13 @@ const typescriptAnnotations = async (inputFile: string) => {
     if(eslintInput) {
       core.startGroup('ESLint Annotations')
       const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
-      await eslintAnnotations(eslintFile, pwd)
+      await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
       core.endGroup()
     }
     if(typescriptInput) {
       core.startGroup('Typescript Annotations')
       const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
-      await typescriptAnnotations(typescriptFile)
+      await typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
       core.endGroup()
     }
 

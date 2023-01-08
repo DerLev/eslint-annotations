@@ -5,9 +5,15 @@ inputs:
   eslint-report:
     description: Location of the ESLint report file
     default: ''
+  eslint-annotation-prefix:
+    description: Prefix for ESLint annotations
+    default: 'ESLint Rule:'
   typescript-log:
     description: Location of the Typescript log file
     default: ''
+  typescript-annotation-prefix:
+    description: Prefix for Typescript annotations
+    default: 'Typescript Error:'
   error-on-warn:
     description: Whether the action should fail when ESLint only throws a warn
     default: 'false'
