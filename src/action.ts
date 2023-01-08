@@ -8,9 +8,6 @@ interface AnnotationConfig {
   prefix: string
 }
 
-// this will throw a warning
-const number = 0
-
 const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, config: AnnotationConfig) => {
   const filteredReport = inputFile.map((item) => {
     if(!item.messages.length) return false
