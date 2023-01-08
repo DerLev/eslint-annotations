@@ -25,4 +25,4 @@ jobs:
         uses: ./
         with:
           eslint-report: eslint_report.json
-          typescript-log: typescript-2.log
+          typescript-log: typescript.log
