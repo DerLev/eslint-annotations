@@ -17,8 +17,7 @@
     "dev:esl": "esw -w . --ext .ts"
   },
   "dependencies": {
-    "@actions/core": "^1.10.0",
-    "@actions/exec": "^1.1.1"
+    "@actions/core": "^1.10.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
