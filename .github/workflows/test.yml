@@ -19,7 +19,16 @@ jobs:
         run: yarn
       - name: Lint Action
         run: yarn lint --output-file eslint_report.json --format json
+        continue-on-error: true
       - name: Build Action
-        run: yarn build --outDir dist
-      - name: Test Action
-        uses: ./
+        run: yarn build --outDir dist > typescript.log
+        continue-on-error: true
+      - name: Upload logs as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-output
+          path: |
+            typescript.log
+            eslint_report.json
+      # - name: Test Action
+      #   uses: ./

@@ -1,11 +1,10 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
 
-(() => {
-  core.notice('This is a test', {
-    title: 'Hello World!',
-    file: 'src/action.ts',
-    startLine: 5,
-    endLine: 10
-  })
+(async () => {
+  const eslintOutput = JSON.parse(fs.readFileSync('./eslint_report.json').toString())
+  console.log(JSON.stringify(eslintOutput, null, 2))
+
+  let number: number
+  number = "String"
 })()
