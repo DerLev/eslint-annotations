@@ -23,3 +23,6 @@ jobs:
         run: npm run build -- --outDir dist > typescript.log
       - name: Test Action
         uses: ./
+        with:
+          eslint-report: eslint_report.json
+          typescript-log: typescript.log
