@@ -34,8 +34,9 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 
 ### Options
 
-If you don't set a file path for either ESLint or Typescript the respective 
-annotations are skipped
+> **Note**  
+> If you don't specify one of the filepaths the respective annotation script is skipped.  
+> Not specifying both makes this action just pass and not do anything.
 
 | Name                           | Description                                                  | Required | Default             |
 |--------------------------------|--------------------------------------------------------------|----------|---------------------|
@@ -44,10 +45,6 @@ annotations are skipped
 | `typescript-log`               | Location of Typescript log file                              | ✗        | None                |
 | `typescript-annotation-prefix` | Prefix for Typescript annotations                            | ✗        | `Typescript Error:` |
 | `error-on-warn`                | Whether the action should fail when ESLint outputs a warning | ✗        | `false`             |
-
-> **Note**  
-> As written above:  
-> Not specifying the `eslint-report` or `typescript-log` option will just pass the action and not do anything
 
 ### Setup
 
