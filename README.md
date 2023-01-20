@@ -88,7 +88,7 @@ jobs:
           node-version: 16
           cache: "yarn"
       - name: Install Dependencies
-        run: yarn
+        run: yarn --forzen-lockfile
       - name: Lint Action
 
         # this line stores the output of eslint in a json file.

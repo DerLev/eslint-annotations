@@ -23,7 +23,7 @@ jobs:
           node-version: 16
           cache: "yarn"
       - name: Install Dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
       - name: Lint Action
         run: yarn lint
       - name: Type Check Action
