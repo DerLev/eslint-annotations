@@ -1,91 +1,12 @@
 import * as core from '@actions/core'
 import * as fs from 'fs/promises'
 import path from 'path'
-
-let failStatus = 0
-
-interface AnnotationConfig {
-  prefix: string
-}
-
-const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, config: AnnotationConfig) => {
-  const filteredReport = inputFile.map((item) => {
-    if(!item.messages.length) return false
-
-    return {
-      file: item.filePath.replace(pwd, ''),
-      messages: item.messages
-    }
-  }).filter((item) => item !== false)
-
-  filteredReport.map((item) => {
-    if(item == false) return
-    item.messages.map((msg) => {
-      if(msg.severity == 2) {
-        core.error(msg.message, {
-          title: config.prefix + ' ' + msg.ruleId,
-          file: item.file,
-          startLine: msg.line,
-          endLine: msg.endLine
-        })
-      } else {
-        core.warning(msg.message, {
-          title: config.prefix + ' ' + msg.ruleId,
-          file: item.file,
-          startLine: msg.line,
-          endLine: msg.endLine
-        })
-      }
-    })
-  })
-
-  const highestSeverity = (() => {
-    let highest = 0
-
-    filteredReport.map((item) => {
-      if(item == false) return
-      item.messages.map((msg) => {
-        if(msg.severity >= highest) highest = msg.severity
-      })
-    })
-
-    return highest
-  })()
-
-  failStatus = highestSeverity
-}
-
-const typescriptAnnotations = async (inputFile: string, config: AnnotationConfig) => {
-  const fileArray = inputFile.split('\n')
-
-  const tsErrors = fileArray.filter((item) => item.includes(': error TS'))
-  const formattedErrors = tsErrors.map((error) => {
-    const areas = error.split(': ')
-
-    const location = areas[0].split(/[(,)]+/)
-
-    return {
-      file: location[0],
-      line: Number(location[1]),
-      column: Number(location[2]),
-      error: areas[1],
-      message: areas[2]
-    }
-  })
-  
-  formattedErrors.map((error) => {
-    core.error(error.message, {
-      title: config.prefix + ' ' + error.error,
-      file: error.file,
-      startLine: error.line,
-      endLine: error.line
-    })
-  })
-
-  if(formattedErrors.length) failStatus = 2
-}
+import typescriptAnnotations from './typescriptAnnotations'
+import eslintAnnotations from './eslintAnnotations'
 
 (async () => {
+  let failStatus = 0
+  
   const eslintInput = process.env.NODE_ENV === 'development' ?
     'eslint_report.json' :
     core.getInput('eslint-report')
@@ -108,14 +29,25 @@ const typescriptAnnotations = async (inputFile: string, config: AnnotationConfig
     if(eslintInput) {
       core.startGroup('ESLint Annotations')
       const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
-      await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+      const eslintFailStatus = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+      failStatus = eslintFailStatus
       core.endGroup()
     }
     if(typescriptInput) {
       core.startGroup('Typescript Annotations')
       const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
-      await typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+      const typescriptFailStatus = await typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+      if(typescriptFailStatus) failStatus = typescriptFailStatus
       core.endGroup()
+    }
+
+    if(!eslintInput && !typescriptInput) {
+      core.notice(
+        'Using this action with its current config does not do anything. Please configure one filepath',
+        {
+          title: 'No files specified'
+        }
+      )
     }
 
     if(failStatus >= errorOnWarn) {

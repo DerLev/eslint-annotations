@@ -22,3 +22,7 @@ interface EslinJsonOutput {
   source: string
   usedDeprecatedRules: any[]
 }
+
+interface AnnotationConfig {
+  prefix: string
+}
