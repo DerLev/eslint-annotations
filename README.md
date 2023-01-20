@@ -21,6 +21,10 @@ make the ultimate GitHub Action that suits my needs.
 This snippet just contains the minimum for annotating code through Typescript 
 and ESLint. Look at [Setup](#setup) for a full workflow.
 
+> **Warning**  
+> If you don't specify either `eslint-report` or `typescript-log`
+> the action won't do anything
+
 ```yaml
 - uses: DerLev/eslint-annotations@v1
   with:
@@ -30,8 +34,9 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 
 ### Options
 
-If you don't set a file path for either ESLint or Typescript the respective 
-annotations are skipped
+> **Note**  
+> If you don't specify one of the filepaths the respective annotation script is skipped.  
+> Not specifying both makes this action just pass and not do anything.
 
 | Name                           | Description                                                  | Required | Default             |
 |--------------------------------|--------------------------------------------------------------|----------|---------------------|
@@ -46,7 +51,7 @@ annotations are skipped
 The following example uses the scripts of the `package.json` shown below and 
 **yarn** as a package manager.
 
-> NOTE:  
+> **Note**  
 > When using npm you need to use an argument seperator to tell npm to pass on the args to the script:  
 > `npm run lint -- --output-file eslint_report.json --format json`
 
