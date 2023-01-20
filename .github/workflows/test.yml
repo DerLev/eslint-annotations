@@ -16,7 +16,7 @@ jobs:
           node-version: 16
           cache: "yarn"
       - name: Install Dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
       - name: Lint Action
         run: yarn lint --output-file eslint_report.json --format json
       - name: Type Check Action
