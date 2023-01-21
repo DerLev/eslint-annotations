@@ -36,6 +36,7 @@ const createStatusCheck = async (
 const updateStatusCheck = async (
   token: string,
   checkId: number,
+  checkName: string,
   annotations: AnnotationsOutput
 ) => {
   const octokit = github.getOctokit(token)
@@ -58,6 +59,7 @@ const updateStatusCheck = async (
     status: 'in_progress',
     completed_at: new Date().toISOString(),
     output: {
+      title: checkName,
       summary: 'annotating',
       annotations: formattedAnnotations
     }
@@ -69,6 +71,7 @@ const updateStatusCheck = async (
 const closeStatusCheck = async (
   token: string,
   checkId: number,
+  checkName: string,
   conclusion: "success" | "failure"
 ) => {
   const octokit = github.getOctokit(token)
@@ -81,6 +84,7 @@ const closeStatusCheck = async (
     conclusion: conclusion,
     completed_at: new Date().toISOString(),
     output: {
+      title: checkName,
       summary: 'Done!',
     }
   })

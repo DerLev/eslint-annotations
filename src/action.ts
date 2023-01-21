@@ -39,14 +39,14 @@ import {
       const eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
       failStatus = eslintOutput.highestSeverity
       annotateCode(eslintOutput, 'ESLint Annotations')
-      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, eslintOutput)
+      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, statusCheckName, eslintOutput)
     }
     if(typescriptInput) {
       const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
       const typescriptOutput = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
       failStatus = typescriptOutput.highestSeverity
       annotateCode(typescriptOutput, 'Typescript Annotations')
-      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, typescriptOutput)
+      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, statusCheckName, typescriptOutput)
     }
 
     if(!eslintInput && !typescriptInput) {
@@ -58,7 +58,7 @@ import {
       )
     }
 
-    if(createStatusCheckConfig && githubToken) await closeStatusCheck(githubToken, checkId, failStatus >= errorOnWarn ? 'failure' : 'success')
+    if(createStatusCheckConfig && githubToken) await closeStatusCheck(githubToken, checkId, statusCheckName, failStatus >= errorOnWarn ? 'failure' : 'success')
 
     if(failStatus >= errorOnWarn) {
       process.exit(1)
