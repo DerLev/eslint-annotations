@@ -17,6 +17,11 @@ inputs:
   error-on-warn:
     description: Whether the action should fail when ESLint only throws a warn
     default: 'false'
+  github-token:
+    description: GitHub token for accessing the API
+  create-status-check:
+    description: Whether to create a seperate status check or not
+    default: 'true'
 
 runs:
   using: 'node16'

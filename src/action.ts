@@ -1,32 +1,36 @@
 import * as core from '@actions/core'
+import * as github from '@actions/github'
 import * as fs from 'fs/promises'
 import path from 'path'
 import typescriptAnnotations from './typescriptAnnotations'
 import eslintAnnotations from './eslintAnnotations'
 import annotateCode from './annotateCode'
+import getInputs from './inputs'
+import {
+  createStatusCheck,
+  updateStatusCheck,
+  closeStatusCheck
+} from './statusCheck'
 
 (async () => {
   let failStatus = 0
   
-  const eslintInput = process.env.NODE_ENV === 'development' ?
-    'eslint_report.json' :
-    core.getInput('eslint-report')
-  const typescriptInput = process.env.NODE_ENV === 'development' ?
-    'typescript.log' :
-    core.getInput('typescript-log')
-  const errorOnWarn = core.getInput('error-on-warn') === 'true' ? 1 : 2
-
-  const eslintPrefix = core.getInput('eslint-annotation-prefix')
-  const typescriptPrefix = core.getInput('typescript-annotation-prefix')
-
-  const GITHUB_WORKSPACE = !process.env.GITHUB_WORKSPACE ?
-    '/home/runner/work/eslint-annotations/eslint-annotations' :
-    process.env.GITHUB_WORKSPACE
-  const pwd = GITHUB_WORKSPACE.substring(GITHUB_WORKSPACE.length -1, GITHUB_WORKSPACE.length) === '/' ?
-    GITHUB_WORKSPACE :
-    GITHUB_WORKSPACE + '/'
+  const {
+    eslintInput,
+    eslintPrefix,
+    typescriptInput,
+    typescriptPrefix,
+    githubToken,
+    errorOnWarn,
+    createStatusCheck: createStatusCheckConfig,
+    pwd,
+  } = getInputs()
 
   try {
+    if(createStatusCheckConfig && githubToken) {
+      await createStatusCheck(githubToken)
+    }
+
     if(eslintInput) {
       const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
       const eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })

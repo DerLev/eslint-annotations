@@ -34,4 +34,5 @@ jobs:
           eslint-report: src/__tests__/test_eslint_report.json
           typescript-log: src/__tests__/test_typescript.log
           error-on-warn: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
