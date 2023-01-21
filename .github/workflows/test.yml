@@ -31,7 +31,7 @@ jobs:
       - name: Test Action with test Output
         uses: ./
         with:
-          eslint-report: src/__tests_/test_eslint_report.json
+          eslint-report: src/__tests__/test_eslint_report.json
           typescript-log: src/__tests__/test_typescript.log
           error-on-warn: true
         continue-on-error: true
