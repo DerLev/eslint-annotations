@@ -6,7 +6,9 @@ import eslintAnnotations from './eslintAnnotations'
 import annotateCode from './annotateCode'
 import getInputs from './inputs'
 import {
-  createStatusCheck
+  createStatusCheck,
+  updateStatusCheck,
+  closeStatusCheck
 } from './statusCheck'
 
 (async () => {
@@ -25,9 +27,10 @@ import {
 
   try {
     console.log(createStatusCheckConfig, githubToken)
+    let checkId: number = 0
     if(createStatusCheckConfig && githubToken) {
       console.log('calling createStatusCheck')
-      await createStatusCheck(githubToken)
+      checkId = await createStatusCheck(githubToken)
     }
 
     if(eslintInput) {
@@ -35,12 +38,14 @@ import {
       const eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
       failStatus = eslintOutput.highestSeverity
       annotateCode(eslintOutput, 'ESLint Annotations')
+      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, eslintOutput)
     }
     if(typescriptInput) {
       const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
       const typescriptOutput = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
       failStatus = typescriptOutput.highestSeverity
       annotateCode(typescriptOutput, 'Typescript Annotations')
+      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, typescriptOutput)
     }
 
     if(!eslintInput && !typescriptInput) {
@@ -51,6 +56,8 @@ import {
         }
       )
     }
+
+    if(createStatusCheckConfig && githubToken) await closeStatusCheck(githubToken, checkId)
 
     if(failStatus >= errorOnWarn) {
       process.exit(1)
