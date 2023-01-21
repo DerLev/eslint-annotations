@@ -1,0 +1,4 @@
+yarn run v1.22.19
+$ tsc --noEmit
+src/__tests__/fail.ts(4,1): error TS2322: Type 'string' is not assignable to type 'number'.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

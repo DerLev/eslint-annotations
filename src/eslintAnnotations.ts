@@ -1,5 +1,12 @@
 import * as core from '@actions/core'
 
+/**
+ * Annotate code with ESLint warns and errors
+ * @param inputFile JSON input of ESLint output
+ * @param pwd Current working directory of workflow runner
+ * @param config Config of annotations
+ * @returns Severity number
+ */
 const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, config: AnnotationConfig) => {
   const filteredReport = inputFile.map((item) => {
     if(!item.messages.length) return false

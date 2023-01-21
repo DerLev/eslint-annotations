@@ -1,5 +1,11 @@
 import * as core from '@actions/core'
 
+/**
+ * Annotate code with TypeScript errors
+ * @param inputFile Input string of TS CLI output
+ * @param config Config of annotations
+ * @returns Severity of 2 if failed or nothing
+ */
 const typescriptAnnotations = async (inputFile: string, config: AnnotationConfig) => {
   const fileArray = inputFile.split('\n')
 
