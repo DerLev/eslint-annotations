@@ -1,4 +1,3 @@
-import * as core from '@actions/core'
 import * as github from '@actions/github'
 
 const createStatusCheck = async (
@@ -18,12 +17,13 @@ const createStatusCheck = async (
   })
 }
 
-const updateStatusCheck = async () => {
+// const updateStatusCheck = async () => {
 
-}
+// }
 
-const closeStatusCheck = async () => {
+// const closeStatusCheck = async () => {
 
-}
+// }
 
-export { createStatusCheck, updateStatusCheck, closeStatusCheck }
+export { createStatusCheck }
+// export { createStatusCheck, updateStatusCheck, closeStatusCheck }

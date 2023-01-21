@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import * as github from '@actions/github'
 import * as fs from 'fs/promises'
 import path from 'path'
 import typescriptAnnotations from './typescriptAnnotations'
@@ -7,9 +6,7 @@ import eslintAnnotations from './eslintAnnotations'
 import annotateCode from './annotateCode'
 import getInputs from './inputs'
 import {
-  createStatusCheck,
-  updateStatusCheck,
-  closeStatusCheck
+  createStatusCheck
 } from './statusCheck'
 
 (async () => {
