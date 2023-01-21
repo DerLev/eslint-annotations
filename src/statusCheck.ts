@@ -26,6 +26,7 @@ const createStatusCheck = async (
     started_at: new Date().toISOString(),
     output: {
       title: checkName,
+      summary: 'This status check will annotate your code shortly...'
     }
   })
 
