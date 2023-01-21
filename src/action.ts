@@ -27,7 +27,7 @@ import {
 
   try {
     console.log(createStatusCheckConfig, githubToken)
-    let checkId: number = 0
+    let checkId = 0
     if(createStatusCheckConfig && githubToken) {
       console.log('calling createStatusCheck')
       checkId = await createStatusCheck(githubToken)
