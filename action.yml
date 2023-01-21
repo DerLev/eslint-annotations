@@ -22,6 +22,9 @@ inputs:
   create-status-check:
     description: Whether to create a seperate status check or not
     default: 'true'
+  status-check-name:
+    description: Name of the status check created
+    default: 'eslint-annotations'
 
 runs:
   using: 'node16'

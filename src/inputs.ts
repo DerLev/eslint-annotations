@@ -20,6 +20,7 @@ const getInputs = () => {
     
   const errorOnWarn = core.getInput('error-on-warn') === 'true' ? 1 : 2
   const createStatusCheck = core.getInput('create-status-check') === 'true' ? true : false
+  const statusCheckName = core.getInput('status-check-name')
 
   const GITHUB_WORKSPACE = !process.env.GITHUB_WORKSPACE ?
     '/home/runner/work/eslint-annotations/eslint-annotations' :
@@ -36,6 +37,7 @@ const getInputs = () => {
     githubToken,
     errorOnWarn,
     createStatusCheck,
+    statusCheckName,
     pwd,
   }
 }

@@ -22,6 +22,7 @@ import {
     githubToken,
     errorOnWarn,
     createStatusCheck: createStatusCheckConfig,
+    statusCheckName,
     pwd,
   } = getInputs()
 
@@ -30,7 +31,7 @@ import {
     let checkId = 0
     if(createStatusCheckConfig && githubToken) {
       console.log('calling createStatusCheck')
-      checkId = await createStatusCheck(githubToken)
+      checkId = await createStatusCheck(githubToken, statusCheckName)
     }
 
     if(eslintInput) {
@@ -57,7 +58,7 @@ import {
       )
     }
 
-    if(createStatusCheckConfig && githubToken) await closeStatusCheck(githubToken, checkId)
+    if(createStatusCheckConfig && githubToken) await closeStatusCheck(githubToken, checkId, failStatus >= errorOnWarn ? 'failure' : 'success')
 
     if(failStatus >= errorOnWarn) {
       process.exit(1)

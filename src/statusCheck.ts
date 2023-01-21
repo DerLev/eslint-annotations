@@ -12,7 +12,8 @@ const annotationLevelConversion = (severity: number) => {
 }
 
 const createStatusCheck = async (
-  token: string
+  token: string,
+  checkName: string
 ) => {
   const octokit = github.getOctokit(token)
   
@@ -20,9 +21,12 @@ const createStatusCheck = async (
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     head_sha: github.context.sha,
-    name: 'test check',
+    name: checkName,
     status: 'in_progress',
     started_at: new Date().toISOString(),
+    output: {
+      title: checkName,
+    }
   })
 
   return response.data.id
@@ -50,12 +54,10 @@ const updateStatusCheck = async (
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     check_run_id: checkId,
-    status: 'completed',
-    conclusion: 'success',
+    status: 'in_progress',
     completed_at: new Date().toISOString(),
     output: {
-      title: 'Hello World!',
-      summary: 'this worked',
+      summary: 'annotating',
       annotations: formattedAnnotations
     }
   })
@@ -65,7 +67,8 @@ const updateStatusCheck = async (
 
 const closeStatusCheck = async (
   token: string,
-  checkId: number
+  checkId: number,
+  conclusion: "success" | "failure"
 ) => {
   const octokit = github.getOctokit(token)
 
@@ -74,11 +77,10 @@ const closeStatusCheck = async (
     repo: github.context.repo.repo,
     check_run_id: checkId,
     status: 'completed',
-    conclusion: 'success',
+    conclusion: conclusion,
     completed_at: new Date().toISOString(),
     output: {
-      title: 'Hello World!',
-      summary: 'this worked done',
+      summary: 'Done!',
     }
   })
 
