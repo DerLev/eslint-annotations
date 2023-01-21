@@ -8,7 +8,7 @@ const createStatusCheck = async (
   const start = new Date()
   start.setMinutes(start.getMinutes() - 1)
 
-  const response = octokit.rest.checks.create({
+  const response = await octokit.rest.checks.create({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     head_sha: github.context.sha,
