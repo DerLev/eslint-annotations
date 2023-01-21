@@ -5,16 +5,21 @@ const createStatusCheck = async (
 ) => {
   const octokit = github.getOctokit(token)
   
-  octokit.rest.checks.create({
+  const start = new Date()
+  start.setMinutes(start.getMinutes() - 1)
+
+  const response = octokit.rest.checks.create({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     head_sha: github.context.sha,
     name: 'test check',
     status: 'completed',
     conclusion: 'success',
-    started_at: new Date().toISOString(),
+    started_at: start.toISOString(),
     completed_at: new Date().toISOString()
   })
+
+  console.log(response)
 }
 
 // const updateStatusCheck = async () => {

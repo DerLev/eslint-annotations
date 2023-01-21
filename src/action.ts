@@ -24,7 +24,9 @@ import {
   } = getInputs()
 
   try {
+    console.log(createStatusCheckConfig, githubToken)
     if(createStatusCheckConfig && githubToken) {
+      console.log('calling createStatusCheck')
       await createStatusCheck(githubToken)
     }
 
