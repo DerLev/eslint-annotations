@@ -3,6 +3,7 @@ import * as fs from 'fs/promises'
 import path from 'path'
 import typescriptAnnotations from './typescriptAnnotations'
 import eslintAnnotations from './eslintAnnotations'
+import annotateCode from './annotateCode'
 
 (async () => {
   let failStatus = 0
@@ -27,18 +28,16 @@ import eslintAnnotations from './eslintAnnotations'
 
   try {
     if(eslintInput) {
-      core.startGroup('ESLint Annotations')
       const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
-      const eslintFailStatus = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
-      failStatus = eslintFailStatus
-      core.endGroup()
+      const eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+      failStatus = eslintOutput.highestSeverity
+      annotateCode(eslintOutput, 'ESLint Annotations')
     }
     if(typescriptInput) {
-      core.startGroup('Typescript Annotations')
       const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
-      const typescriptFailStatus = await typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
-      if(typescriptFailStatus) failStatus = typescriptFailStatus
-      core.endGroup()
+      const typescriptOutput = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+      failStatus = typescriptOutput.highestSeverity
+      annotateCode(typescriptOutput, 'Typescript Annotations')
     }
 
     if(!eslintInput && !typescriptInput) {
@@ -51,7 +50,6 @@ import eslintAnnotations from './eslintAnnotations'
     }
 
     if(failStatus >= errorOnWarn) {
-      console.log('threshold passed')
       process.exit(1)
     }
   } catch (err) {

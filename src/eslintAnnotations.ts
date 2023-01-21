@@ -1,13 +1,15 @@
-import * as core from '@actions/core'
-
 /**
- * Annotate code with ESLint warns and errors
+ * Parse ESLint Output to cleaner Annotations Object
  * @param inputFile JSON input of ESLint output
  * @param pwd Current working directory of workflow runner
  * @param config Config of annotations
- * @returns Severity number
+ * @returns JSON Object for use in code
  */
-const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, config: AnnotationConfig) => {
+const eslintAnnotations = (
+  inputFile: EslinJsonOutput[],
+  pwd: string,
+  config: AnnotationConfig
+): AnnotationsOutput => {
   const filteredReport = inputFile.map((item) => {
     if(!item.messages.length) return false
 
@@ -17,24 +19,18 @@ const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, conf
     }
   }).filter((item) => item !== false)
 
+  const annotations: AnnotationObject[] = []
   filteredReport.map((item) => {
     if(item == false) return
     item.messages.map((msg) => {
-      if(msg.severity == 2) {
-        core.error(msg.message, {
-          title: config.prefix + ' ' + msg.ruleId,
-          file: item.file,
-          startLine: msg.line,
-          endLine: msg.endLine
-        })
-      } else {
-        core.warning(msg.message, {
-          title: config.prefix + ' ' + msg.ruleId,
-          file: item.file,
-          startLine: msg.line,
-          endLine: msg.endLine
-        })
-      }
+      annotations.push({
+        severity: msg.severity,
+        title: config.prefix + ' ' + msg.ruleId,
+        message: msg.message,
+        file: item.file,
+        line: msg.line,
+        endLine: msg.endLine,
+      })
     })
   })
 
@@ -51,7 +47,10 @@ const eslintAnnotations = async (inputFile: EslinJsonOutput[], pwd: string, conf
     return highest
   })()
 
-  return highestSeverity
+  return {
+    highestSeverity,
+    annotations
+  }
 }
 
 export default eslintAnnotations

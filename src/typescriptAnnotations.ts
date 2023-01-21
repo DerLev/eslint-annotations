@@ -1,12 +1,13 @@
-import * as core from '@actions/core'
-
 /**
- * Annotate code with TypeScript errors
+ * Parse JSON Object from TypeScript errors
  * @param inputFile Input string of TS CLI output
  * @param config Config of annotations
- * @returns Severity of 2 if failed or nothing
+ * @returns JSON Object for use in code
  */
-const typescriptAnnotations = async (inputFile: string, config: AnnotationConfig) => {
+const typescriptAnnotations = (
+  inputFile: string,
+  config: AnnotationConfig
+): AnnotationsOutput => {
   const fileArray = inputFile.split('\n')
 
   const tsErrors = fileArray.filter((item) => item.includes(': error TS'))
@@ -19,21 +20,16 @@ const typescriptAnnotations = async (inputFile: string, config: AnnotationConfig
       file: location[0],
       line: Number(location[1]),
       column: Number(location[2]),
-      error: areas[1],
-      message: areas[2]
+      title: config.prefix + ' ' + areas[1],
+      message: areas[2],
+      severity: 2,
     }
   })
   
-  formattedErrors.map((error) => {
-    core.error(error.message, {
-      title: config.prefix + ' ' + error.error,
-      file: error.file,
-      startLine: error.line,
-      endLine: error.line
-    })
-  })
-
-  if(formattedErrors.length) return 2
+  return {
+    highestSeverity: formattedErrors.length ? 2 : 0,
+    annotations: formattedErrors
+  }
 }
 
 export default typescriptAnnotations

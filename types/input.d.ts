@@ -26,3 +26,18 @@ interface EslinJsonOutput {
 interface AnnotationConfig {
   prefix: string
 }
+
+interface AnnotationsOutput {
+  highestSeverity: number
+  annotations: AnnotationObject[]
+}
+
+interface AnnotationObject {
+  severity: number
+  title: string
+  message: string
+  file: string
+  line: number
+  endLine?: number
+  column?: number
+}
