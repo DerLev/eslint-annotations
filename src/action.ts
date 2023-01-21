@@ -12,8 +12,6 @@ import {
 } from './statusCheck'
 
 (async () => {
-  let failStatus = 0
-  
   const {
     eslintInput,
     eslintPrefix,
@@ -27,28 +25,6 @@ import {
   } = getInputs()
 
   try {
-    console.log(createStatusCheckConfig, githubToken)
-    let checkId = 0
-    if(createStatusCheckConfig && githubToken) {
-      console.log('calling createStatusCheck')
-      checkId = await createStatusCheck(githubToken, statusCheckName)
-    }
-
-    if(eslintInput) {
-      const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
-      const eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
-      failStatus = eslintOutput.highestSeverity
-      annotateCode(eslintOutput, 'ESLint Annotations')
-      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, statusCheckName, eslintOutput)
-    }
-    if(typescriptInput) {
-      const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
-      const typescriptOutput = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
-      failStatus = typescriptOutput.highestSeverity
-      annotateCode(typescriptOutput, 'Typescript Annotations')
-      if(createStatusCheckConfig && githubToken) await updateStatusCheck(githubToken, checkId, statusCheckName, typescriptOutput)
-    }
-
     if(!eslintInput && !typescriptInput) {
       core.notice(
         'Using this action with its current config does not do anything. Please configure one filepath',
@@ -56,15 +32,58 @@ import {
           title: 'No files specified'
         }
       )
+      process.exit(0)
     }
 
-    if(createStatusCheckConfig && githubToken) await closeStatusCheck(githubToken, checkId, statusCheckName, failStatus >= errorOnWarn ? 'failure' : 'success')
+    let eslintOutput: AnnotationsOutput = { highestSeverity: 0, annotations: [] }
+    let typescriptOutput: AnnotationsOutput = { highestSeverity: 0, annotations: [] }
 
-    if(failStatus >= errorOnWarn) {
-      process.exit(1)
+    let highestSeverity = 0
+
+    if(eslintInput) {
+      const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
+      eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+      if(eslintOutput.highestSeverity >= highestSeverity) {
+        highestSeverity = eslintOutput.highestSeverity
+      }
     }
-  } catch (err) {
-    core.error(String(err), { title: 'Error reading file' })
-    process.exit(1)
+    if(typescriptInput) {
+      const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
+      typescriptOutput = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+      if(typescriptOutput.highestSeverity >= highestSeverity) {
+        highestSeverity = typescriptOutput.highestSeverity
+      }
+    }
+
+    if(githubToken && createStatusCheckConfig) {
+      const checkId = await createStatusCheck(githubToken, statusCheckName)
+
+      if(eslintInput) await updateStatusCheck(
+        githubToken,
+        checkId,
+        statusCheckName,
+        eslintOutput
+      )
+      if(typescriptInput) await updateStatusCheck(
+        githubToken,
+        checkId,
+        statusCheckName,
+        typescriptOutput
+      )
+
+      const shouldFail = highestSeverity >= ( errorOnWarn ? 1 : 2 )
+
+      await closeStatusCheck(githubToken, checkId, statusCheckName, shouldFail)
+    } else {
+      if(eslintInput) annotateCode(eslintOutput, 'ESLint Annotations')
+      if(typescriptInput) annotateCode(typescriptOutput, 'TypeScript Annotations')
+
+      if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
+        process.exit(1)
+      }
+    }
+  } catch(err) {
+    core.error(String(err))
+    process.exit(2)
   }
 })()

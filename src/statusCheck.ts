@@ -72,7 +72,7 @@ const closeStatusCheck = async (
   token: string,
   checkId: number,
   checkName: string,
-  conclusion: "success" | "failure"
+  conclusion: boolean
 ) => {
   const octokit = github.getOctokit(token)
 
@@ -81,7 +81,7 @@ const closeStatusCheck = async (
     repo: github.context.repo.repo,
     check_run_id: checkId,
     status: 'completed',
-    conclusion: conclusion,
+    conclusion: conclusion ? 'failure' : 'success',
     completed_at: new Date().toISOString(),
     output: {
       title: checkName,
