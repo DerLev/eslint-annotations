@@ -131,3 +131,10 @@ documentation are always welcome.
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
 | `>v1.0.2` | *any*           | :x:                  |
+
+---
+
+### Future versions might include
+
+- [ ] Markdown job summary
+- [ ] Seperate job for annotations to easily set required jobs in branch protection rules
