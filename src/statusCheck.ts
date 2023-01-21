@@ -16,7 +16,11 @@ const createStatusCheck = async (
     status: 'completed',
     conclusion: 'success',
     started_at: start.toISOString(),
-    completed_at: new Date().toISOString()
+    completed_at: new Date().toISOString(),
+    output: {
+      title: 'Hello World!',
+      summary: 'this is a test'
+    }
   })
 
   console.log(response)
