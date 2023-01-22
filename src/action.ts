@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import * as github from '@actions/github'
 import * as fs from 'fs/promises'
 import path from 'path'
 import typescriptAnnotations from './typescriptAnnotations'
@@ -22,6 +23,7 @@ import {
     createStatusCheck: createStatusCheckConfig,
     statusCheckName,
     failedAttempts,
+    failInPr,
     pwd,
   } = getInputs()
 
@@ -133,6 +135,7 @@ import {
     }
 
     if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
+      if(github.context.eventName == 'pull_request' && !failInPr) process.exit(0)
       process.exit(1)
     }
   } catch(err) {

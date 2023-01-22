@@ -138,3 +138,4 @@ documentation are always welcome.
 
 - [ ] ~~Markdown job summary~~
 - [x] ~~Seperate status check for annotations~~
+- [ ] Only showing annotations in PRs for changed files

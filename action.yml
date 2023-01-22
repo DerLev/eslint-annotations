@@ -27,6 +27,9 @@ inputs:
     default: 'eslint-annotations'
   failed-attempts:
     description: IDs of failed attempts to stop status checks from running
+  fail-in-pr:
+    description: Whether the action should fail in a PR
+    default: 'true'
 
 runs:
   using: 'node16'
