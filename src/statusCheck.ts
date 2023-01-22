@@ -119,7 +119,7 @@ const closeStatusCheck = async (
     repo: github.context.repo.repo,
     check_run_id: checkId,
     status: 'completed',
-    conclusion: shouldFail ? 'action_required' : 'success',
+    conclusion: shouldFail ? 'failure' : 'success',
     completed_at: new Date().toISOString(),
     output: {
       title: checkName,
