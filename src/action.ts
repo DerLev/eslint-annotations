@@ -136,10 +136,8 @@ import {
 
     if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
       if(github.context.eventName == 'pull_request' && !failInPr) {
-        console.log('fail in pr: false')
-        process.exit(0)
+        return
       } else {
-        console.log('fail in pr: true')
         process.exit(1)
       }
     }
