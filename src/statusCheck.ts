@@ -93,6 +93,7 @@ const closeStatusCheck = async (
   shouldFail: boolean,
   stats: StatusCheckStats
 ) => {
+  let isEmpty = false
   let summary = ''
 
   if(stats.typescript.enabled) {
@@ -110,6 +111,7 @@ const closeStatusCheck = async (
     summary += ` ${!stats.eslint.enabled && stats.typescript.errors == 1 ? 'was' : 'were'} found`
   } else {
     summary += 'Nothing is configured'
+    isEmpty = true
   }
 
   const octokit = github.getOctokit(token)
@@ -119,7 +121,7 @@ const closeStatusCheck = async (
     repo: github.context.repo.repo,
     check_run_id: checkId,
     status: 'completed',
-    conclusion: shouldFail ? 'failure' : 'success',
+    conclusion: shouldFail ? 'failure' : isEmpty ? 'skipped' : 'success',
     completed_at: new Date().toISOString(),
     output: {
       title: checkName,

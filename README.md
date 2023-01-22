@@ -38,13 +38,21 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 > If you don't specify one of the filepaths the respective annotation script is skipped.  
 > Not specifying both makes this action just pass and not do anything.
 
-| Name                           | Description                                                  | Required | Default             |
-|--------------------------------|--------------------------------------------------------------|----------|---------------------|
-| `eslint-report`                | Location of the ESLint report JSON file                      | ✗        | None                |
-| `eslint-annotation-prefix`     | Prefix for ESLint annotations                                | ✗        | `ESLint Rule:`      |
-| `typescript-log`               | Location of Typescript log file                              | ✗        | None                |
-| `typescript-annotation-prefix` | Prefix for Typescript annotations                            | ✗        | `Typescript Error:` |
-| `error-on-warn`                | Whether the action should fail when ESLint outputs a warning | ✗        | `false`             |
+| Name                           | Description                                                            | Required | Default              |
+|--------------------------------|------------------------------------------------------------------------|----------|----------------------|
+| `eslint-report`                | Location of the ESLint report JSON file                                | ✗        | None                 |
+| `eslint-annotation-prefix`     | Prefix for ESLint annotations                                          | ✗        | `ESLint Rule:`       |
+| `typescript-log`               | Location of Typescript log file                                        | ✗        | None                 |
+| `typescript-annotation-prefix` | Prefix for Typescript annotations                                      | ✗        | `Typescript Error:`  |
+| `error-on-warn`                | Whether the action should fail when ESLint outputs a warning           | ✗        | `false`              |
+| `github-token`                 | GitHub token for accessing the API                                     | ✗        | None                 |
+| `create-status-check`          | Whether to create a seperate status check or not                       | ✗        | `true`               |
+| `status-check-name`            | Name of the status check created                                       | ✗        | `eslint-annotations` |
+| `failed-attempts`              | Comma seperated IDs of failed attempts *[look here](#failed-attempts)* | ✗        | None                 |
+| `fail-in-pr`                   | Whether the action should fail in a PR                                 | ✗        | `true`               |
+
+> **Note**  
+> Everything status check related requires the `github-token` to be set
 
 ### Setup
 
@@ -116,6 +124,45 @@ jobs:
           eslint-report: eslint_report.json
           typescript-log: typescript.log
 
+```
+
+### Failed Attempts
+
+Due to my limited testing the action can have a few flaws that may result in a 
+status check still running. To resolve these issues you can create a workflow 
+that can be manually triggered to resolve those running checks.
+
+The input will be the IDs of status checks seperated by a comma 
+(e.g. `12345678901, 23456789012` or `12345678901,23456789012`)
+
+> **Note**  
+> To get a check ID you will need to go to its respective page on GitHub:  
+> ```
+> https://github.com/DerLev/eslint-annotations/runs/12345678901
+>                                this is the id -> |-----------|
+> ```
+
+`.github/workflows/fix.yml`
+
+```yaml
+name: Fix Running Checks
+on:
+  workflow_dispatch:
+    inputs:
+      failed_attempts:
+        description: Failed Attempt IDs
+        type: string
+
+jobs:
+  fix-running:
+    name: Fix Running Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Action with test Output
+        uses: DerLev/eslint-annotations@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          failed-attempts: ${{ inputs.failed_attempts }}
 ```
 
 ### Support
