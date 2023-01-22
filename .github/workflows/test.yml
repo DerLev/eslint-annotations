@@ -1,6 +1,10 @@
 name: Test Action
 on:
   workflow_dispatch:
+    inputs:
+      failed_attempts:
+        description: Failed Attempt IDs
+        type: string
 
 jobs:
   build-and-test:
@@ -36,4 +40,5 @@ jobs:
           error-on-warn: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           status-check-name: action-test
+          failed-attempts: ${{ inputs.failed_attempts }}
         continue-on-error: true

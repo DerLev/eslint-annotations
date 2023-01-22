@@ -25,6 +25,8 @@ inputs:
   status-check-name:
     description: Name of the status check created
     default: 'eslint-annotations'
+  failed-attempts:
+    description: IDs of failed attempts to stop status checks from running
 
 runs:
   using: 'node16'

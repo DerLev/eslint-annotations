@@ -21,6 +21,7 @@ import {
     errorOnWarn,
     createStatusCheck: createStatusCheckConfig,
     statusCheckName,
+    failedAttempts,
     pwd,
   } = getInputs()
 
@@ -103,6 +104,16 @@ import {
     } else {
       if(eslintInput) annotateCode(eslintOutput, 'ESLint Annotations')
       if(typescriptInput) annotateCode(typescriptOutput, 'TypeScript Annotations')
+    }
+
+    // handle failed attempts
+    if(failedAttempts) {
+      const failedArray = failedAttempts.split(',').map((attempt) => {
+        if(attempt.substring(0, 1) == ' ') return Number(attempt.substring(1, attempt.length))
+        return Number(attempt)
+      })
+
+      console.log(failedArray)
     }
 
     if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
