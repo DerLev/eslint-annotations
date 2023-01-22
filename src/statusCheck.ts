@@ -30,8 +30,6 @@ const createStatusCheck = async (
     }
   })
 
-  console.log(response)
-
   return response.data.id
 }
 
@@ -59,15 +57,12 @@ const updateStatusCheck = async (
     repo: github.context.repo.repo,
     check_run_id: checkId,
     status: 'in_progress',
-    completed_at: new Date().toISOString(),
     output: {
       title: checkName,
       summary: 'annotating',
       annotations: formattedAnnotations
     }
   })
-
-  console.log(response)
 
   return response.data.id
 }
@@ -93,8 +88,6 @@ const closeStatusCheck = async (
     }
   })
 
-  console.log(response)
-  
   return response.data.id
 }
 

@@ -56,17 +56,14 @@ import {
     }
 
     if(githubToken && createStatusCheckConfig) {
-      console.log('create')
       const checkId = await createStatusCheck(githubToken, statusCheckName)
 
-      console.log('eslint')
       if(eslintInput) await updateStatusCheck(
         githubToken,
         checkId,
         statusCheckName,
         eslintOutput
       )
-      console.log('ts')
       if(typescriptInput) await updateStatusCheck(
         githubToken,
         checkId,
@@ -76,7 +73,6 @@ import {
 
       const shouldFail = highestSeverity >= ( errorOnWarn ? 1 : 2 )
 
-      console.log('done', shouldFail)
       await closeStatusCheck(githubToken, checkId, statusCheckName, shouldFail)
     } else {
       if(eslintInput) annotateCode(eslintOutput, 'ESLint Annotations')
