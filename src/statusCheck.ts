@@ -30,6 +30,8 @@ const createStatusCheck = async (
     }
   })
 
+  console.log(response)
+
   return response.data.id
 }
 
@@ -65,6 +67,8 @@ const updateStatusCheck = async (
     }
   })
 
+  console.log(response)
+
   return response.data.id
 }
 
@@ -89,6 +93,8 @@ const closeStatusCheck = async (
     }
   })
 
+  console.log(response)
+  
   return response.data.id
 }
 
