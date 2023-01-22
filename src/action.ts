@@ -77,10 +77,10 @@ import {
     } else {
       if(eslintInput) annotateCode(eslintOutput, 'ESLint Annotations')
       if(typescriptInput) annotateCode(typescriptOutput, 'TypeScript Annotations')
+    }
 
-      if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
-        process.exit(1)
-      }
+    if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
+      process.exit(1)
     }
   } catch(err) {
     core.error(String(err))
