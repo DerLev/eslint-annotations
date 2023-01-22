@@ -1,9 +1,10 @@
 name: Build Action
 on:
   workflow_dispatch:
-    version:
-      description: Version number of PR
-      default: v0.0.0
+    inputs:  
+      version:
+        description: Version number of PR
+        default: v0.0.0
 
 jobs:
   build-and-commit:
