@@ -2,6 +2,10 @@ name: Test Action
 on:
   workflow_dispatch:
     inputs:
+      create-status-check:
+        description: Create Status Check
+        type: boolean
+        default: true
       failed_attempts:
         description: Failed Attempt IDs
         type: string
@@ -39,6 +43,7 @@ jobs:
           typescript-log: src/__tests__/test_typescript.log
           error-on-warn: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          create-status-check: ${{ inputs.create-status-check }}
           status-check-name: action-test
           failed-attempts: ${{ inputs.failed_attempts }}
         continue-on-error: true

@@ -48,7 +48,7 @@ import {
         errors: 0,
       },
       typescript: {
-        enabled: true,
+        enabled: false,
         errors: 0,
       },
     }
@@ -107,13 +107,27 @@ import {
     }
 
     // handle failed attempts
-    if(failedAttempts) {
+    if(failedAttempts && githubToken) {
       const failedArray = failedAttempts.split(',').map((attempt) => {
         if(attempt.substring(0, 1) == ' ') return Number(attempt.substring(1, attempt.length))
         return Number(attempt)
       })
 
-      console.log(failedArray)
+      const checkStats = {
+        eslint: {
+          enabled: false,
+          warnings: 0,
+          errors: 0,
+        },
+        typescript: {
+          enabled: false,
+          errors: 0,
+        },
+      }
+
+      failedArray.map(async (failed) => {
+        await closeStatusCheck(githubToken, failed, 'Failed Attempt', false, checkStats)
+      })
     }
 
     if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
