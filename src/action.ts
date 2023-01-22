@@ -40,7 +40,7 @@ import {
 
     let highestSeverity = 0
 
-    let statusCheckStats: StatusCheckStats = {
+    const statusCheckStats: StatusCheckStats = {
       eslint: {
         enabled: false,
         warnings: 0,
