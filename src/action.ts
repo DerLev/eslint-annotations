@@ -71,8 +71,6 @@ import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
         warnings: warns,
         errors: errors
       }
-
-      console.log(eslintOutput)
     }
     if(typescriptInput) {
       const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
@@ -85,14 +83,13 @@ import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
         enabled: true,
         errors: typescriptOutput.annotations.length
       }
-
-      console.log(eslintOutput)
     }
 
     if(githubToken && createStatusCheckConfig) {
       const checkId = await createStatusCheck(githubToken, statusCheckName)
       console.log(checkId)
-      console.log(github.context.sha)
+      console.log(github.context.eventName)
+      console.log(failInPr)
       const payload = github.context.payload as PullRequestEvent
       console.log(payload.pull_request.head.sha)
 
