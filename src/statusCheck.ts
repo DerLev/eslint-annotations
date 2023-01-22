@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
+import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
 
 const annotationLevelConversion = (severity: number) => {
   switch (severity) {
@@ -16,12 +17,17 @@ const createStatusCheck = async (
   token: string,
   checkName: string
 ) => {
+  const prPayload = github.context.payload as PullRequestEvent
+  const headSha = github.context.eventName == 'pull_request' ?
+    prPayload.pull_request.head.sha :
+    github.context.sha
+
   const octokit = github.getOctokit(token)
   
   const response = await octokit.rest.checks.create({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
-    head_sha: github.context.sha,
+    head_sha: headSha,
     name: checkName,
     status: 'in_progress',
     started_at: new Date().toISOString(),
