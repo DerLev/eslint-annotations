@@ -11,7 +11,6 @@ import {
   updateStatusCheck,
   closeStatusCheck
 } from './statusCheck'
-import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
 
 (async () => {
   const {
@@ -87,11 +86,6 @@ import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
 
     if(githubToken && createStatusCheckConfig) {
       const checkId = await createStatusCheck(githubToken, statusCheckName)
-      console.log(checkId)
-      console.log(github.context.eventName)
-      console.log(failInPr)
-      const payload = github.context.payload as PullRequestEvent
-      console.log(payload.pull_request.head.sha)
 
       if(eslintInput) await updateStatusCheck(
         githubToken,
@@ -140,10 +134,15 @@ import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
       await Promise.all(promises)
     }
 
-    // if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
-    //   if(github.context.eventName == 'pull_request' && !failInPr) process.exit(0)
-    //   process.exit(1)
-    // }
+    if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
+      if(github.context.eventName == 'pull_request' && !failInPr) {
+        console.log('fail in pr: false')
+        process.exit(0)
+      } else {
+        console.log('fail in pr: true')
+        process.exit(1)
+      }
+    }
   } catch(err) {
     core.error(String(err))
     process.exit(2)
