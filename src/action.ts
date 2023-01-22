@@ -12,6 +12,9 @@ import {
   closeStatusCheck
 } from './statusCheck'
 
+let number: number = 0
+number = 'test'
+
 (async () => {
   const {
     eslintInput,
