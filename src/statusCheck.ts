@@ -90,8 +90,28 @@ const closeStatusCheck = async (
   token: string,
   checkId: number,
   checkName: string,
-  shouldFail: boolean
+  shouldFail: boolean,
+  stats: StatusCheckStats
 ) => {
+  let summary = ''
+
+  if(stats.typescript.enabled) {
+    summary += `${stats.typescript.errors} TypeScript Error${stats.typescript.errors != 1 ? 's' : ''}`
+  }
+
+  if(stats.eslint.enabled) {
+    summary += stats.typescript.enabled ? ', ' : ''
+    summary += `${stats.eslint.errors} ESLint Error${stats.eslint.errors != 1 ? 's' : ''}`
+    summary += ' and '
+    summary += `${stats.eslint.warnings} ESLint Warning${stats.eslint.warnings != 1 ? 's' : ''}`
+  }
+
+  if(summary) {
+    summary += ` ${!stats.eslint.enabled && stats.typescript.errors == 1 ? 'was' : 'were'} found`
+  } else {
+    summary += 'Nothing is configured'
+  }
+
   const octokit = github.getOctokit(token)
 
   const response = await octokit.rest.checks.update({
@@ -103,7 +123,7 @@ const closeStatusCheck = async (
     completed_at: new Date().toISOString(),
     output: {
       title: checkName,
-      summary: 'Done!',
+      summary: summary,
     }
   })
 

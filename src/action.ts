@@ -40,11 +40,32 @@ import {
 
     let highestSeverity = 0
 
+    let statusCheckStats: StatusCheckStats = {
+      eslint: {
+        enabled: false,
+        warnings: 0,
+        errors: 0,
+      },
+      typescript: {
+        enabled: true,
+        errors: 0,
+      },
+    }
+
     if(eslintInput) {
       const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
       eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
       if(eslintOutput.highestSeverity >= highestSeverity) {
         highestSeverity = eslintOutput.highestSeverity
+      }
+
+      const errors = eslintOutput.annotations.filter((ann) => ann.severity >= 2).length
+      const warns = eslintOutput.annotations.length - errors
+
+      statusCheckStats.eslint = {
+        enabled: true,
+        warnings: warns,
+        errors: errors
       }
     }
     if(typescriptInput) {
@@ -52,6 +73,11 @@ import {
       typescriptOutput = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
       if(typescriptOutput.highestSeverity >= highestSeverity) {
         highestSeverity = typescriptOutput.highestSeverity
+      }
+
+      statusCheckStats.typescript = {
+        enabled: true,
+        errors: typescriptOutput.annotations.length
       }
     }
 
@@ -73,7 +99,7 @@ import {
 
       const shouldFail = highestSeverity >= ( errorOnWarn ? 1 : 2 )
 
-      await closeStatusCheck(githubToken, checkId, statusCheckName, shouldFail)
+      await closeStatusCheck(githubToken, checkId, statusCheckName, shouldFail, statusCheckStats)
     } else {
       if(eslintInput) annotateCode(eslintOutput, 'ESLint Annotations')
       if(typescriptInput) annotateCode(typescriptOutput, 'TypeScript Annotations')

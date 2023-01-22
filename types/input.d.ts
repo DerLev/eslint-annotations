@@ -42,3 +42,15 @@ interface AnnotationObject {
   endLine?: number
   column?: number
 }
+
+interface StatusCheckStats {
+  eslint: {
+    enabled: boolen
+    warnings: number
+    errors: number
+  }
+  typescript: {
+    enabled: boolen
+    errors: number
+  }
+}
