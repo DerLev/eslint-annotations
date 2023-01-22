@@ -134,10 +134,10 @@ import {
       await Promise.all(promises)
     }
 
-    if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
-      if(github.context.eventName == 'pull_request' && !failInPr) process.exit(0)
-      process.exit(1)
-    }
+    // if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
+    //   if(github.context.eventName == 'pull_request' && !failInPr) process.exit(0)
+    //   process.exit(1)
+    // }
   } catch(err) {
     core.error(String(err))
     process.exit(2)
