@@ -135,8 +135,11 @@ import {
     }
 
     if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
-      if(github.context.eventName == 'pull_request' && !failInPr) process.exit(0)
-      process.exit(1)
+      if(github.context.eventName == 'pull_request' && !failInPr) {
+        return
+      } else {
+        process.exit(1)
+      }
     }
   } catch(err) {
     core.error(String(err))
