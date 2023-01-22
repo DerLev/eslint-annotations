@@ -28,6 +28,7 @@ interface AnnotationConfig {
 }
 
 interface AnnotationsOutput {
+  type: "eslint" | "typescript"
   highestSeverity: number
   annotations: AnnotationObject[]
 }

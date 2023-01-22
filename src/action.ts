@@ -35,8 +35,8 @@ import {
       process.exit(0)
     }
 
-    let eslintOutput: AnnotationsOutput = { highestSeverity: 0, annotations: [] }
-    let typescriptOutput: AnnotationsOutput = { highestSeverity: 0, annotations: [] }
+    let eslintOutput: AnnotationsOutput = { type: 'eslint', highestSeverity: 0, annotations: [] }
+    let typescriptOutput: AnnotationsOutput = { type: 'typescript', highestSeverity: 0, annotations: [] }
 
     let highestSeverity = 0
 

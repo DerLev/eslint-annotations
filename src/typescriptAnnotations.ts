@@ -27,6 +27,7 @@ const typescriptAnnotations = (
   })
   
   return {
+    type: 'typescript',
     highestSeverity: formattedErrors.length ? 2 : 0,
     annotations: formattedErrors
   }

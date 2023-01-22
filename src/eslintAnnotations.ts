@@ -48,6 +48,7 @@ const eslintAnnotations = (
   })()
 
   return {
+    type: 'eslint',
     highestSeverity,
     annotations
   }
