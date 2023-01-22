@@ -136,5 +136,5 @@ documentation are always welcome.
 
 ### Future versions might include
 
-- [ ] Markdown job summary
-- [ ] Seperate job for annotations to easily set required jobs in branch protection rules
+- [ ] ~~Markdown job summary~~
+- [x] ~~Seperate status check for annotations~~
