@@ -11,6 +11,7 @@ import {
   updateStatusCheck,
   closeStatusCheck
 } from './statusCheck'
+import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
 
 (async () => {
   const {
@@ -92,7 +93,8 @@ import {
       const checkId = await createStatusCheck(githubToken, statusCheckName)
       console.log(checkId)
       console.log(github.context.sha)
-      console.log(process.env.GITHUB_SHA)
+      const payload = github.context.payload as PullRequestEvent
+      console.log(payload.pull_request.head.sha)
 
       if(eslintInput) await updateStatusCheck(
         githubToken,
