@@ -125,9 +125,11 @@ import {
         },
       }
 
-      failedArray.map(async (failed) => {
-        await closeStatusCheck(githubToken, failed, 'Failed Attempt', false, checkStats)
+      const promises: Promise<any>[] = []
+      failedArray.map((failed) => {
+        promises.push(closeStatusCheck(githubToken, failed, 'Failed Attempt', false, checkStats))
       })
+      await Promise.all(promises)
     }
 
     if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
