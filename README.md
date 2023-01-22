@@ -174,10 +174,10 @@ documentation are always welcome.
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `v1.0.2`  | **npm**         | :white_check_mark:   |
+| `v1.1.0`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>v1.0.2` | *any*           | :x:                  |
+| `>v1.1.0` | *any*           | :x:                  |
 
 ---
 
