@@ -1,0 +1,39 @@
+name: Test Action PR
+on:
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: Build & Run Action
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'type/test')
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Setup Nodejs environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile
+      - name: Lint Action
+        run: yarn lint --output-file eslint_report.json --format json
+      - name: Type Check Action
+        run: yarn tsc > typescript.log
+      - name: Build Action
+        run: yarn build
+      - name: Test Action with current Output
+        uses: ./
+        with:
+          eslint-report: eslint_report.json
+          typescript-log: typescript.log
+      - name: Test Action with test Output
+        uses: ./
+        with:
+          eslint-report: src/__tests__/test_eslint_report.json
+          typescript-log: src/__tests__/test_typescript.log
+          error-on-warn: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          status-check-name: action-test
+        continue-on-error: true
