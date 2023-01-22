@@ -100,7 +100,7 @@ import {
         typescriptOutput
       )
 
-      const shouldFail = highestSeverity >= ( errorOnWarn ? 1 : 2 )
+      const shouldFail = highestSeverity >= errorOnWarn
 
       await closeStatusCheck(githubToken, checkId, statusCheckName, shouldFail, statusCheckStats)
     } else {
@@ -134,7 +134,7 @@ import {
       await Promise.all(promises)
     }
 
-    if( highestSeverity >= ( errorOnWarn ? 1 : 2 ) ) {
+    if(highestSeverity >= errorOnWarn) {
       if(github.context.eventName == 'pull_request' && !failInPr) {
         return
       } else {
