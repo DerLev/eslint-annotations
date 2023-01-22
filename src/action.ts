@@ -92,6 +92,7 @@ import {
       const checkId = await createStatusCheck(githubToken, statusCheckName)
       console.log(checkId)
       console.log(github.context.sha)
+      console.log(process.env.GITHUB_SHA)
 
       if(eslintInput) await updateStatusCheck(
         githubToken,
