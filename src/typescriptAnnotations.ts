@@ -20,7 +20,7 @@ const typescriptAnnotations = (
       file: location[0],
       line: Number(location[1]),
       column: Number(location[2]),
-      title: config.prefix + ' ' + areas[1],
+      title: config.prefix + ' ' + areas[1].split(' ')[1],
       message: areas[2],
       severity: 2,
     }
