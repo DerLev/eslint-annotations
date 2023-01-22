@@ -91,6 +91,7 @@ import {
     if(githubToken && createStatusCheckConfig) {
       const checkId = await createStatusCheck(githubToken, statusCheckName)
       console.log(checkId)
+      console.log(github.context.sha)
 
       if(eslintInput) await updateStatusCheck(
         githubToken,
