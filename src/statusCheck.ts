@@ -135,6 +135,16 @@ const closeStatusCheck = async (
     }
   })
 
+  if(shouldFail) {
+    core.error('View for details: ' + response.data.html_url, {
+      title: 'Action failed! See link for annotations'
+    })
+  } else {
+    core.notice('View for details: ' + response.data.html_url, {
+      title: 'Action succeeded! See link for annotations'
+    })
+  }
+
   return response.data.id
 }
 
