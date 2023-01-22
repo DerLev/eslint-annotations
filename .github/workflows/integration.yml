@@ -26,8 +26,10 @@ jobs:
         run: yarn --frozen-lockfile
       - name: Lint Action
         run: yarn lint --output-file eslint_report.json --format json
+        continue-on-error: true
       - name: Type Check Action
         run: yarn tsc > typescript.log
+        continue-on-error: true
       - name: Annotate Code
         uses: DerLev/eslint-annotations@v1
         with:
