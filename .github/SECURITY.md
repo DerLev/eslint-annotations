@@ -6,10 +6,10 @@ These versions of the action are currently supported:
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `v1.1.0`  | **npm**         | :white_check_mark:   |
+| `v1.1.1`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>v1.1.0` | *any*           | :x:                  |
+| `>v1.1.1` | *any*           | :x:                  |
 
 ## Reporting a Vulnerability
 
