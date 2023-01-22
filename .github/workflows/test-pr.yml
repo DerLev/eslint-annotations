@@ -28,12 +28,12 @@ jobs:
         with:
           eslint-report: eslint_report.json
           typescript-log: typescript.log
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          status-check-name: action-test
       - name: Test Action with test Output
         uses: ./
         with:
           eslint-report: src/__tests__/test_eslint_report.json
           typescript-log: src/__tests__/test_typescript.log
           error-on-warn: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          status-check-name: action-test
         continue-on-error: true

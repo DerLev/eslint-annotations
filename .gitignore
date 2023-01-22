@@ -3,3 +3,4 @@ build
 eslint_report.json
 *.log
 !test_*.log
+bundle-report.html
