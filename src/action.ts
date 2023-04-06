@@ -40,8 +40,8 @@ import {
       process.exit(0)
     }
 
-    let eslintOutput: AnnotationsOutput = { type: 'eslint', highestSeverity: 0, annotations: [] }
-    let typescriptOutput: AnnotationsOutput = { type: 'typescript', highestSeverity: 0, annotations: [] }
+    const eslintOutput: AnnotationsOutput = { type: 'eslint', highestSeverity: 0, annotations: [] }
+    const typescriptOutput: AnnotationsOutput = { type: 'typescript', highestSeverity: 0, annotations: [] }
 
     let highestSeverity = 0
 
