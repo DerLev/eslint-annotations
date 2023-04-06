@@ -90,27 +90,31 @@ import {
       await Promise.all(typescriptInputArray.map(async (file) => {
         const typescriptFile = await (await fs.readFile(path.join('./', file))).toString()
         const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
-
+        
         typescriptOutput.highestSeverity = typescriptOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :
           typescriptOutput.highestSeverity
-
+        
         typescriptOutput.annotations = typescriptOutput.annotations.concat(
           fileAnnotation.annotations.filter((item) => typescriptOutput.annotations.indexOf(item) < 0)
         )
-
+        
         return fileAnnotation
       }))
-      
+
       if(typescriptOutput.highestSeverity >= highestSeverity) {
         highestSeverity = typescriptOutput.highestSeverity
       }
-
+      
       statusCheckStats.typescript = {
         enabled: true,
         errors: typescriptOutput.annotations.length
       }
     }
+
+    console.log(statusCheckStats)
+    console.log(eslintOutput)
+    console.log(highestSeverity)
 
     if(githubToken && createStatusCheckConfig) {
       const checkId = await createStatusCheck(githubToken, statusCheckName)
