@@ -6,18 +6,14 @@ updates:
       interval: "weekly"
     assignees:
       - "DerLev"
-    reviewers:
-      - "DerLev"
     labels:
       - "dependabot/gh-actions"
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     assignees:
-      - "DerLev"
-    reviewers:
       - "DerLev"
     labels:
       - "dependabot/yarn"
