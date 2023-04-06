@@ -12,6 +12,8 @@ import {
   closeStatusCheck
 } from './statusCheck'
 
+const string: number = 'will fail';
+
 (async () => {
   const {
     eslintInput,
@@ -112,10 +114,6 @@ import {
       }
     }
 
-    console.log(statusCheckStats)
-    console.log(eslintOutput)
-    console.log(highestSeverity)
-
     if(githubToken && createStatusCheckConfig) {
       const checkId = await createStatusCheck(githubToken, statusCheckName)
 
@@ -169,10 +167,8 @@ import {
     if(highestSeverity >= errorOnWarn) {
       console.log('error-on-warn')
       if(github.context.eventName == 'pull_request' && !failInPr) {
-        console.log('error-on-warn not in pr')
         return
       } else {
-        console.log('error-on-warn in pr')
         process.exit(1)
       }
     }
