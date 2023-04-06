@@ -27,7 +27,7 @@
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
-    "concurrently": "^7.6.0",
+    "concurrently": "^8.0.1",
     "eslint": "^8.37.0",
     "eslint-watch": "^8.0.0",
     "ts-loader": "^9.4.2",
