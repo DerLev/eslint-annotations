@@ -12,8 +12,6 @@ import {
   closeStatusCheck
 } from './statusCheck'
 
-const willCreateWarning = 'hello world';
-
 (async () => {
   const {
     eslintInput,
