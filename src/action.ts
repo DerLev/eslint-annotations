@@ -12,8 +12,6 @@ import {
   closeStatusCheck
 } from './statusCheck'
 
-const string: number = 'will fail';
-
 (async () => {
   const {
     eslintInput,
