@@ -167,9 +167,12 @@ import {
     }
 
     if(highestSeverity >= errorOnWarn) {
+      console.log('error-on-warn')
       if(github.context.eventName == 'pull_request' && !failInPr) {
+        console.log('error-on-warn not in pr')
         return
       } else {
+        console.log('error-on-warn in pr')
         process.exit(1)
       }
     }
