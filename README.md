@@ -192,3 +192,4 @@ documentation are always welcome.
 - [x] ~~Seperate status check for annotations~~
 - [ ] Only showing annotations in PRs for changed files
 - [x] ~~Support multiple TS and ESLint input files~~
+- [ ] Add checking of GITHUB_TOKEN for permissions
