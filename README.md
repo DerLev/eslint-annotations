@@ -52,7 +52,7 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 | `fail-in-pr`                   | Whether the action should fail in a PR                                 | ✗        | `true`               |
 
 > **Note**  
-> Everything status check related requires the `github-token` to be set
+> Everything status check related requires the `github-token` to be set and have full access to the `checks` permission claim
 
 ### Setup
 
@@ -87,6 +87,11 @@ jobs:
   lint-and-check:
     name: Lint & Type Check
     runs-on: ubuntu-latest
+
+    # this line is for the GITHUB_TOKEN
+    # so the action always has access to the checks claim
+    permissions:
+      checks: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -186,3 +191,4 @@ documentation are always welcome.
 - [ ] ~~Markdown job summary~~
 - [x] ~~Seperate status check for annotations~~
 - [ ] Only showing annotations in PRs for changed files
+- [ ] Support multiple TS and ESLint input files
