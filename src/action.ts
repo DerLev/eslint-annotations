@@ -58,7 +58,7 @@ import {
     }
 
     if(eslintInput) {
-      eslintInputArray.forEach(async (file) => {
+      await Promise.all(eslintInputArray.map(async (file) => {
         const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', file))).toString())
         const fileAnnotation = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
 
@@ -69,7 +69,9 @@ import {
         eslintOutput.annotations = eslintOutput.annotations.concat(
           fileAnnotation.annotations.filter((item) => eslintOutput.annotations.indexOf(item) < 0)
         )
-      })
+
+        return fileAnnotation
+      }))
 
       if(eslintOutput.highestSeverity >= highestSeverity) {
         highestSeverity = eslintOutput.highestSeverity
@@ -85,7 +87,7 @@ import {
       }
     }
     if(typescriptInput) {
-      typescriptInputArray.forEach(async (file) => {
+      await Promise.all(typescriptInputArray.map(async (file) => {
         const typescriptFile = await (await fs.readFile(path.join('./', file))).toString()
         const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
 
@@ -96,7 +98,10 @@ import {
         typescriptOutput.annotations = typescriptOutput.annotations.concat(
           fileAnnotation.annotations.filter((item) => typescriptOutput.annotations.indexOf(item) < 0)
         )
-      })
+
+        return fileAnnotation
+      }))
+      
       if(typescriptOutput.highestSeverity >= highestSeverity) {
         highestSeverity = typescriptOutput.highestSeverity
       }
