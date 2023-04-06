@@ -191,4 +191,4 @@ documentation are always welcome.
 - [ ] ~~Markdown job summary~~
 - [x] ~~Seperate status check for annotations~~
 - [ ] Only showing annotations in PRs for changed files
-- [ ] Support multiple TS and ESLint input files
+- [x] ~~Support multiple TS and ESLint input files~~
