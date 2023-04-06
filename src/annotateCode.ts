@@ -3,6 +3,7 @@ import * as core from '@actions/core'
 /**
  * Annotates Code through CLI
  * @param input Object of annotations
+ * @param groupName Name of the Group the annotations belong to
  */
 const annotateCode = (
   input: AnnotationsOutput,

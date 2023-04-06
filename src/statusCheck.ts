@@ -2,6 +2,11 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import { PullRequestEvent } from '@octokit/webhooks-definitions/schema'
 
+/**
+ * Converts a severity code to a string readable by GitHub
+ * @param severity Severity number
+ * @returns Severity string for GitHub
+ */
 const annotationLevelConversion = (severity: number) => {
   switch (severity) {
     case 2:
@@ -13,6 +18,12 @@ const annotationLevelConversion = (severity: number) => {
   }
 }
 
+/**
+ * Create a status check for code annotations
+ * @param token GitHub token
+ * @param checkName Name of the status check
+ * @returns ID of the status check
+ */
 const createStatusCheck = async (
   token: string,
   checkName: string
@@ -40,6 +51,14 @@ const createStatusCheck = async (
   return response.data.id
 }
 
+/**
+ * Update a running status check to change name and append code annotations
+ * @param token GitHub token
+ * @param checkId ID of the running status check
+ * @param checkName Name of the status check
+ * @param annotations Annotations to append to status check
+ * @returns Promise array
+ */
 const updateStatusCheck = async (
   token: string,
   checkId: number,
@@ -92,6 +111,15 @@ const updateStatusCheck = async (
   return Promise.all(promises)
 }
 
+/**
+ * Close a running status check and add a summary
+ * @param token GitHub token
+ * @param checkId ID of the running status check
+ * @param checkName Name to set the status check to
+ * @param shouldFail Whether the status check should fail
+ * @param stats Stats object to report number of errors and warns
+ * @returns status check ID
+ */
 const closeStatusCheck = async (
   token: string,
   checkId: number,
