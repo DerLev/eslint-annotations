@@ -7,6 +7,8 @@ jobs:
     name: Build & Run Action
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.labels.*.name, 'type/test')
+    permissions:
+      checks: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
