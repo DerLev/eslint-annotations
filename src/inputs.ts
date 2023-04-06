@@ -8,10 +8,12 @@ const getInputs = () => {
   const eslintInput = process.env.NODE_ENV === 'development' ?
     'eslint_report.json' :
     core.getInput('eslint-report')
-  const typescriptInput = process.env.NODE_ENV === 'development' ?
-    'typescript.log' :
-    core.getInput('typescript-log')
+  const eslintInputArray = eslintInput.split(' ')
   
+  const typescriptInput = process.env.NODE_ENV === 'development' ?
+  'typescript.log' :
+  core.getInput('typescript-log')
+  const typescriptInputArray = typescriptInput.split(' ')
     
   const eslintPrefix = core.getInput('eslint-annotation-prefix')
   const typescriptPrefix = core.getInput('typescript-annotation-prefix')
@@ -34,8 +36,10 @@ const getInputs = () => {
   return {
     eslintInput,
     eslintPrefix,
+    eslintInputArray,
     typescriptInput,
     typescriptPrefix,
+    typescriptInputArray,
     githubToken,
     errorOnWarn,
     createStatusCheck,

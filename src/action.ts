@@ -16,8 +16,10 @@ import {
   const {
     eslintInput,
     eslintPrefix,
+    eslintInputArray,
     typescriptInput,
     typescriptPrefix,
+    typescriptInputArray,
     githubToken,
     errorOnWarn,
     createStatusCheck: createStatusCheckConfig,
@@ -56,8 +58,19 @@ import {
     }
 
     if(eslintInput) {
-      const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', eslintInput))).toString())
-      eslintOutput = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+      eslintInputArray.forEach(async (file) => {
+        const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', file))).toString())
+        const fileAnnotation = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+
+        eslintOutput.highestSeverity = eslintOutput.highestSeverity < fileAnnotation.highestSeverity ?
+          fileAnnotation.highestSeverity :
+          eslintOutput.highestSeverity
+
+        eslintOutput.annotations = eslintOutput.annotations.concat(
+          fileAnnotation.annotations.filter((item) => eslintOutput.annotations.indexOf(item) < 0)
+        )
+      })
+
       if(eslintOutput.highestSeverity >= highestSeverity) {
         highestSeverity = eslintOutput.highestSeverity
       }
@@ -72,8 +85,18 @@ import {
       }
     }
     if(typescriptInput) {
-      const typescriptFile = await (await fs.readFile(path.join('./', typescriptInput))).toString()
-      typescriptOutput = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+      typescriptInputArray.forEach(async (file) => {
+        const typescriptFile = await (await fs.readFile(path.join('./', file))).toString()
+        const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+
+        typescriptOutput.highestSeverity = typescriptOutput.highestSeverity < fileAnnotation.highestSeverity ?
+          fileAnnotation.highestSeverity :
+          typescriptOutput.highestSeverity
+
+        typescriptOutput.annotations = typescriptOutput.annotations.concat(
+          fileAnnotation.annotations.filter((item) => typescriptOutput.annotations.indexOf(item) < 0)
+        )
+      })
       if(typescriptOutput.highestSeverity >= highestSeverity) {
         highestSeverity = typescriptOutput.highestSeverity
       }
