@@ -179,10 +179,10 @@ documentation are always welcome.
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `v1.2.0`  | **npm**         | :white_check_mark:   |
+| `v1.2.1`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>v1.2.0` | *any*           | :x:                  |
+| `>v1.2.1` | *any*           | :x:                  |
 
 ---
 
