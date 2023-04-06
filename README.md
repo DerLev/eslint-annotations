@@ -40,9 +40,9 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 
 | Name                           | Description                                                            | Required | Default              |
 |--------------------------------|------------------------------------------------------------------------|----------|----------------------|
-| `eslint-report`                | Location of the ESLint report JSON file                                | ✗        | None                 |
+| `eslint-report`                | Location of the ESLint report JSON file(s)                             | ✗        | None                 |
 | `eslint-annotation-prefix`     | Prefix for ESLint annotations                                          | ✗        | `ESLint Rule:`       |
-| `typescript-log`               | Location of Typescript log file                                        | ✗        | None                 |
+| `typescript-log`               | Location of Typescript log file(s)                                     | ✗        | None                 |
 | `typescript-annotation-prefix` | Prefix for Typescript annotations                                      | ✗        | `Typescript Error:`  |
 | `error-on-warn`                | Whether the action should fail when ESLint outputs a warning           | ✗        | `false`              |
 | `github-token`                 | GitHub token for accessing the API                                     | ✗        | None                 |
@@ -179,10 +179,10 @@ documentation are always welcome.
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `v1.1.1`  | **npm**         | :white_check_mark:   |
+| `v1.2.0`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>v1.1.1` | *any*           | :x:                  |
+| `>v1.2.0` | *any*           | :x:                  |
 
 ---
 
