@@ -58,7 +58,7 @@ import {
     }
 
     if(eslintInput) {
-      eslintInputArray.forEach(async (file) => {
+      await Promise.all(eslintInputArray.map(async (file) => {
         const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', file))).toString())
         const fileAnnotation = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
 
@@ -69,7 +69,9 @@ import {
         eslintOutput.annotations = eslintOutput.annotations.concat(
           fileAnnotation.annotations.filter((item) => eslintOutput.annotations.indexOf(item) < 0)
         )
-      })
+
+        return fileAnnotation
+      }))
 
       if(eslintOutput.highestSeverity >= highestSeverity) {
         highestSeverity = eslintOutput.highestSeverity
@@ -85,22 +87,25 @@ import {
       }
     }
     if(typescriptInput) {
-      typescriptInputArray.forEach(async (file) => {
+      await Promise.all(typescriptInputArray.map(async (file) => {
         const typescriptFile = await (await fs.readFile(path.join('./', file))).toString()
         const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
-
+        
         typescriptOutput.highestSeverity = typescriptOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :
           typescriptOutput.highestSeverity
-
+        
         typescriptOutput.annotations = typescriptOutput.annotations.concat(
           fileAnnotation.annotations.filter((item) => typescriptOutput.annotations.indexOf(item) < 0)
         )
-      })
+        
+        return fileAnnotation
+      }))
+
       if(typescriptOutput.highestSeverity >= highestSeverity) {
         highestSeverity = typescriptOutput.highestSeverity
       }
-
+      
       statusCheckStats.typescript = {
         enabled: true,
         errors: typescriptOutput.annotations.length
@@ -158,6 +163,7 @@ import {
     }
 
     if(highestSeverity >= errorOnWarn) {
+      console.log('error-on-warn')
       if(github.context.eventName == 'pull_request' && !failInPr) {
         return
       } else {
