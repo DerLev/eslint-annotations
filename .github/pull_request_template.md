@@ -7,5 +7,5 @@
 
 **PR closes**
 
-- *add issues that this PR will close*
-- *closes #0*
+*add issues that this PR will close*  
+*closes #0*
