@@ -26,7 +26,7 @@ import {
     statusCheckName,
     failedAttempts,
     failInPr,
-    pwd,
+    cwd,
   } = getInputs()
 
   try {
@@ -70,7 +70,7 @@ import {
     if(eslintInput) {
       await Promise.all(eslintInputArray.map(async (file) => {
         const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', file))).toString())
-        const fileAnnotation = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+        const fileAnnotation = await eslintAnnotations(eslintFile, cwd, { prefix: eslintPrefix })
 
         eslintOutput.highestSeverity = eslintOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :
