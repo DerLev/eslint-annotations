@@ -11,6 +11,7 @@ import {
   updateStatusCheck,
   closeStatusCheck
 } from './statusCheck'
+import { checkToken } from './githubToken'
 
 (async () => {
   const {
@@ -39,6 +40,8 @@ import {
       )
       process.exit(0)
     }
+
+    if(githubToken) await checkToken(githubToken)
 
     const eslintOutput: AnnotationsOutput = { type: 'eslint', highestSeverity: 0, annotations: [] }
     const typescriptOutput: AnnotationsOutput = { type: 'typescript', highestSeverity: 0, annotations: [] }
