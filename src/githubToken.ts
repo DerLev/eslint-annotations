@@ -7,6 +7,6 @@ import * as github from '@actions/github'
 export const checkToken = async (token: string) => {
   const octokit = github.getOctokit(token)
 
-  const response = await octokit.rest.meta.get()
+  const response = await octokit.request({ url: '/', method: 'GET' })
   console.log(response.headers)
 }
