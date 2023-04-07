@@ -1,1 +1,8 @@
 blank_issues_enabled: true
+contact_links:
+  - name: Discussions of this Repo
+    url: https://github.com/DerLev/eslint-annotations/discussions
+    about: Ask and answer questions here
+  - name: Untested features
+    url: https://github.com/DerLev/eslint-annotations/discussions/64
+    about: Look here for untested features and link your issue to this thread
