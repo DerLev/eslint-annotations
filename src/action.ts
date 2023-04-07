@@ -40,6 +40,16 @@ import {
       process.exit(0)
     }
 
+    // somehow this var needs to be set to a value to avoid TS and ESLint errors
+    let checkId = 0
+
+    if(githubToken && createStatusCheckConfig) {
+      checkId = await createStatusCheck(githubToken, statusCheckName)
+        .catch(() => {
+          throw new Error('There has been an issue creating the status check. Does the action have the right permissions?')
+        })
+    }
+
     const eslintOutput: AnnotationsOutput = { type: 'eslint', highestSeverity: 0, annotations: [] }
     const typescriptOutput: AnnotationsOutput = { type: 'typescript', highestSeverity: 0, annotations: [] }
 
@@ -113,8 +123,6 @@ import {
     }
 
     if(githubToken && createStatusCheckConfig) {
-      const checkId = await createStatusCheck(githubToken, statusCheckName)
-
       if(eslintInput) await updateStatusCheck(
         githubToken,
         checkId,
