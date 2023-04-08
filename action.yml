@@ -33,6 +33,9 @@ inputs:
   only-changed-in-pr:
     description: Whether the action should only annotate changed files in a pull request
     default: 'true'
+  add-notice-with-url:
+    description: Enable or disable the notice added to the workflow logs containing the link to the status check
+    default: 'true'
 
 runs:
   using: 'node16'

@@ -38,6 +38,8 @@ const getInputs = () => {
 
   const onlyChangedInPr = core.getInput('only-changed-in-pr') === 'true'
 
+  const addResultNotice = core.getInput('add-notice-with-url') === 'true'
+
   return {
     eslintInput,
     eslintPrefix,
@@ -53,7 +55,8 @@ const getInputs = () => {
     failInPr,
     cwd,
     inPr,
-    onlyChangedInPr
+    onlyChangedInPr,
+    addResultNotice
   }
 }
 

@@ -28,7 +28,8 @@ import { getChangedFiles } from './pullRequest'
     failInPr,
     cwd,
     inPr,
-    onlyChangedInPr
+    onlyChangedInPr,
+    addResultNotice
   } = getInputs()
 
   try {
@@ -145,7 +146,13 @@ import { getChangedFiles } from './pullRequest'
 
       const shouldFail = highestSeverity >= errorOnWarn
 
-      await closeStatusCheck(githubToken, checkId, statusCheckName, shouldFail, statusCheckStats)
+      await closeStatusCheck(githubToken, {
+        checkId,
+        checkName: statusCheckName,
+        createSummary: addResultNotice,
+        shouldFail,
+        stats: statusCheckStats
+      })
     } else {
       if(eslintInput) annotateCode(eslintOutput, 'ESLint Annotations')
       if(typescriptInput) annotateCode(typescriptOutput, 'TypeScript Annotations')
@@ -172,7 +179,13 @@ import { getChangedFiles } from './pullRequest'
 
       const promises: Promise<any>[] = []
       failedArray.map((failed) => {
-        promises.push(closeStatusCheck(githubToken, failed, 'Failed Attempt', false, checkStats))
+        promises.push(closeStatusCheck(githubToken, {
+          checkId: failed,
+          checkName: 'Failed Attempt',
+          createSummary: false,
+          shouldFail: false,
+          stats: checkStats
+        }))
       })
       await Promise.all(promises)
     }
