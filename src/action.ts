@@ -27,7 +27,8 @@ import { getChangedFiles } from './pullRequest'
     failedAttempts,
     failInPr,
     cwd,
-    inPr
+    inPr,
+    onlyChangedInPr
   } = getInputs()
 
   try {
@@ -52,8 +53,7 @@ import { getChangedFiles } from './pullRequest'
     }
 
     let changedFiles: string[] = []
-    // TODO: add check for action param
-    if(inPr && githubToken) {
+    if(inPr && githubToken && onlyChangedInPr) {
       changedFiles = await getChangedFiles(githubToken)
     }
 

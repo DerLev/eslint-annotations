@@ -30,6 +30,9 @@ inputs:
   fail-in-pr:
     description: Whether the action should fail in a PR
     default: 'true'
+  only-changed-in-pr:
+    description: Whether the action should only annotate changed files in a pull request
+    default: 'true'
 
 runs:
   using: 'node16'
