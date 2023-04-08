@@ -193,6 +193,6 @@ documentation are always welcome.
 
 - [ ] ~~Markdown job summary~~
 - [x] ~~Seperate status check for annotations~~
-- [ ] Only showing annotations in PRs for changed files
+- [x] ~~Only showing annotations in PRs for changed files~~
 - [x] ~~Support multiple TS and ESLint input files~~
 - [x] ~~Add checking of GITHUB_TOKEN for permissions~~

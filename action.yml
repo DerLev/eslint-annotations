@@ -1,5 +1,5 @@
 name: eslint-annotations
-description: Annotates Code directly in GitHub with output of ESLint
+description: Annotates Code directly in GitHub with output of ESLint and TypeScript
 
 inputs:
   eslint-report:
