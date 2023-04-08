@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import * as github from '@actions/github'
 import * as fs from 'fs/promises'
 import path from 'path'
 import typescriptAnnotations from './typescriptAnnotations'
@@ -11,6 +10,7 @@ import {
   updateStatusCheck,
   closeStatusCheck
 } from './statusCheck'
+import { getChangedFiles } from './pullRequest'
 
 (async () => {
   const {
@@ -27,6 +27,8 @@ import {
     failedAttempts,
     failInPr,
     cwd,
+    inPr,
+    onlyChangedInPr
   } = getInputs()
 
   try {
@@ -50,6 +52,11 @@ import {
         })
     }
 
+    let changedFiles: string[] = []
+    if(inPr && githubToken && onlyChangedInPr) {
+      changedFiles = await getChangedFiles(githubToken)
+    }
+
     const eslintOutput: AnnotationsOutput = { type: 'eslint', highestSeverity: 0, annotations: [] }
     const typescriptOutput: AnnotationsOutput = { type: 'typescript', highestSeverity: 0, annotations: [] }
 
@@ -70,7 +77,7 @@ import {
     if(eslintInput) {
       await Promise.all(eslintInputArray.map(async (file) => {
         const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', file))).toString())
-        const fileAnnotation = await eslintAnnotations(eslintFile, cwd, { prefix: eslintPrefix })
+        const fileAnnotation = await eslintAnnotations(eslintFile, cwd, { prefix: eslintPrefix, allowedFiles: changedFiles })
 
         eslintOutput.highestSeverity = eslintOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :
@@ -99,7 +106,7 @@ import {
     if(typescriptInput) {
       await Promise.all(typescriptInputArray.map(async (file) => {
         const typescriptFile = await (await fs.readFile(path.join('./', file))).toString()
-        const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+        const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix, allowedFiles: changedFiles })
         
         typescriptOutput.highestSeverity = typescriptOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :
@@ -172,7 +179,7 @@ import {
 
     if(highestSeverity >= errorOnWarn) {
       console.log('error-on-warn')
-      if(github.context.eventName == 'pull_request' && !failInPr) {
+      if(inPr && !failInPr) {
         return
       } else {
         process.exit(1)

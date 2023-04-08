@@ -25,6 +25,7 @@ interface EslinJsonOutput {
 
 interface AnnotationConfig {
   prefix: string
+  allowedFiles: string[]
 }
 
 interface AnnotationsOutput {

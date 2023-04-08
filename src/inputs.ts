@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import * as github from '@actions/github'
 
 /**
  * Get all action inputs
@@ -21,10 +22,10 @@ const getInputs = () => {
   const githubToken = core.getInput('github-token')
     
   const errorOnWarn = core.getInput('error-on-warn') === 'true' ? 1 : 2
-  const createStatusCheck = core.getInput('create-status-check') === 'true' ? true : false
+  const createStatusCheck = core.getInput('create-status-check') === 'true'
   const statusCheckName = core.getInput('status-check-name')
   const failedAttempts = core.getInput('failed-attempts')
-  const failInPr = core.getInput('fail-in-pr') === 'true' ? true : false
+  const failInPr = core.getInput('fail-in-pr') === 'true'
 
   const GITHUB_WORKSPACE = !process.env.GITHUB_WORKSPACE ?
     '/home/runner/work/eslint-annotations/eslint-annotations' :
@@ -32,6 +33,10 @@ const getInputs = () => {
   const cwd = GITHUB_WORKSPACE.substring(GITHUB_WORKSPACE.length -1, GITHUB_WORKSPACE.length) === '/' ?
     GITHUB_WORKSPACE :
     GITHUB_WORKSPACE + '/'
+
+  const inPr = github.context.eventName === 'pull_request'
+
+  const onlyChangedInPr = core.getInput('only-changed-in-pr') === 'true'
 
   return {
     eslintInput,
@@ -47,6 +52,8 @@ const getInputs = () => {
     failedAttempts,
     failInPr,
     cwd,
+    inPr,
+    onlyChangedInPr
   }
 }
 

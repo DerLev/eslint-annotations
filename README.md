@@ -50,6 +50,9 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 | `status-check-name`            | Name of the status check created                                       | ✗        | `eslint-annotations` |
 | `failed-attempts`              | Comma seperated IDs of failed attempts *[look here](#failed-attempts)* | ✗        | None                 |
 | `fail-in-pr`                   | Whether the action should fail in a PR                                 | ✗        | `true`               |
+| `only-changed-in-pr`           | Whether only changed files should be annotated in a PR                 | ✗        | `true`               |
+
+<!-- TODO: Refine notice to include `only-change-in-pr` option for token requirement -->
 
 > **Note**  
 > Everything status check related requires the `github-token` to be set and have full access to the `checks` permission claim
