@@ -53,6 +53,7 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 | `failed-attempts`              | Comma seperated IDs of failed attempts *[look here](#failed-attempts)*      | ✗        | None                 | ✓              |
 | `fail-in-pr`                   | Whether the action should fail in a PR                                      | ✗        | `true`               | ✗              |
 | `only-changed-in-pr`           | Whether only changed files should be annotated in a PR                      | ✗        | `true`               | ✓              |
+| `add-notice-with-url`          | Toggle the creation of the summary containing the link to the status check  | ✗        | `true`               | ✓              |
 
 > **Note**  
 > Everything that has a check in the `GITHUB_TOKEN` column needs the `github-token` option set with *[the right permissions](#permissions-the-action-needs)*
