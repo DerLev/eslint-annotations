@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import * as github from '@actions/github'
 
 /**
  * Get all action inputs
@@ -33,6 +34,10 @@ const getInputs = () => {
     GITHUB_WORKSPACE :
     GITHUB_WORKSPACE + '/'
 
+  const inPr = github.context.eventName === 'pull_request'
+
+  // TODO: add input for changedFiles check
+
   return {
     eslintInput,
     eslintPrefix,
@@ -47,6 +52,7 @@ const getInputs = () => {
     failedAttempts,
     failInPr,
     pwd,
+    inPr
   }
 }
 

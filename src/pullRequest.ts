@@ -6,8 +6,7 @@ import * as github from '@actions/github'
  */
 export const getChangedFiles = async (token: string) => {
   const { owner, repo } = github.context.repo
-  // const pullNumber = github.context.payload.pull_request?.number
-  const pullNumber = 71
+  const pullNumber = github.context.payload.pull_request?.number
 
   const octokit = github.getOctokit(token)
 

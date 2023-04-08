@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import * as github from '@actions/github'
 import * as fs from 'fs/promises'
 import path from 'path'
 import typescriptAnnotations from './typescriptAnnotations'
@@ -28,6 +27,7 @@ import { getChangedFiles } from './pullRequest'
     failedAttempts,
     failInPr,
     pwd,
+    inPr
   } = getInputs()
 
   try {
@@ -51,6 +51,12 @@ import { getChangedFiles } from './pullRequest'
         })
     }
 
+    let changedFiles: string[] = []
+    // TODO: add check for action param
+    if(inPr && githubToken) {
+      changedFiles = await getChangedFiles(githubToken)
+    }
+
     const eslintOutput: AnnotationsOutput = { type: 'eslint', highestSeverity: 0, annotations: [] }
     const typescriptOutput: AnnotationsOutput = { type: 'typescript', highestSeverity: 0, annotations: [] }
 
@@ -71,7 +77,7 @@ import { getChangedFiles } from './pullRequest'
     if(eslintInput) {
       await Promise.all(eslintInputArray.map(async (file) => {
         const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', file))).toString())
-        const fileAnnotation = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix })
+        const fileAnnotation = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix, allowedFiles: changedFiles })
 
         eslintOutput.highestSeverity = eslintOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :
@@ -100,7 +106,7 @@ import { getChangedFiles } from './pullRequest'
     if(typescriptInput) {
       await Promise.all(typescriptInputArray.map(async (file) => {
         const typescriptFile = await (await fs.readFile(path.join('./', file))).toString()
-        const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix })
+        const fileAnnotation = typescriptAnnotations(typescriptFile, { prefix: typescriptPrefix, allowedFiles: changedFiles })
         
         typescriptOutput.highestSeverity = typescriptOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :
@@ -171,12 +177,9 @@ import { getChangedFiles } from './pullRequest'
       await Promise.all(promises)
     }
 
-    const result = await getChangedFiles(githubToken)
-    console.log(result)
-
     if(highestSeverity >= errorOnWarn) {
       console.log('error-on-warn')
-      if(github.context.eventName == 'pull_request' && !failInPr) {
+      if(inPr && !failInPr) {
         return
       } else {
         process.exit(1)

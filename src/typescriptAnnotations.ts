@@ -15,21 +15,33 @@ const typescriptAnnotations = (
     const areas = error.split(': ')
 
     const location = areas[0].split(/[(,)]+/)
+    const filePath = location[0]
+
+    if(
+      config.allowedFiles.findIndex((item) => item === filePath) < 0 &&
+      config.allowedFiles.length
+    ) return false
 
     return {
-      file: location[0],
+      file: filePath,
       line: Number(location[1]),
       column: Number(location[2]),
       title: config.prefix + ' ' + areas[1].split(' ')[1],
       message: areas[2],
       severity: 2,
     }
-  })
+  }).filter((item) => item !== false)
   
+  let annotations: AnnotationObject[] = []
+  formattedErrors.forEach((error) => {
+    if(error === false) return
+    annotations.push(error)
+  })
+
   return {
     type: 'typescript',
     highestSeverity: formattedErrors.length ? 2 : 0,
-    annotations: formattedErrors
+    annotations
   }
 }
 
