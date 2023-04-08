@@ -11,6 +11,7 @@ import {
   updateStatusCheck,
   closeStatusCheck
 } from './statusCheck'
+import { getChangedFiles } from './pullRequest'
 
 (async () => {
   const {
@@ -169,6 +170,9 @@ import {
       })
       await Promise.all(promises)
     }
+
+    const result = await getChangedFiles(githubToken)
+    console.log(result)
 
     if(highestSeverity >= errorOnWarn) {
       console.log('error-on-warn')
