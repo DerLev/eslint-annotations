@@ -111,6 +111,14 @@ const updateStatusCheck = async (
   return Promise.all(promises)
 }
 
+interface CloseStatusCheckInput {
+  checkId: number
+  checkName: string
+  shouldFail: boolean
+  stats: StatusCheckStats
+  createSummary: boolean
+}
+
 /**
  * Close a running status check and add a summary
  * @param token GitHub token
@@ -122,27 +130,24 @@ const updateStatusCheck = async (
  */
 const closeStatusCheck = async (
   token: string,
-  checkId: number,
-  checkName: string,
-  shouldFail: boolean,
-  stats: StatusCheckStats
+  input: CloseStatusCheckInput
 ) => {
   let isEmpty = false
   let summary = ''
 
-  if(stats.typescript.enabled) {
-    summary += `${stats.typescript.errors} TypeScript Error${stats.typescript.errors != 1 ? 's' : ''}`
+  if(input.stats.typescript.enabled) {
+    summary += `${input.stats.typescript.errors} TypeScript Error${input.stats.typescript.errors != 1 ? 's' : ''}`
   }
 
-  if(stats.eslint.enabled) {
-    summary += stats.typescript.enabled ? ', ' : ''
-    summary += `${stats.eslint.errors} ESLint Error${stats.eslint.errors != 1 ? 's' : ''}`
+  if(input.stats.eslint.enabled) {
+    summary += input.stats.typescript.enabled ? ', ' : ''
+    summary += `${input.stats.eslint.errors} ESLint Error${input.stats.eslint.errors != 1 ? 's' : ''}`
     summary += ' and '
-    summary += `${stats.eslint.warnings} ESLint Warning${stats.eslint.warnings != 1 ? 's' : ''}`
+    summary += `${input.stats.eslint.warnings} ESLint Warning${input.stats.eslint.warnings != 1 ? 's' : ''}`
   }
 
   if(summary) {
-    summary += ` ${!stats.eslint.enabled && stats.typescript.errors == 1 ? 'was' : 'were'} found`
+    summary += ` ${!input.stats.eslint.enabled && input.stats.typescript.errors == 1 ? 'was' : 'were'} found`
   } else {
     summary += 'Nothing is configured'
     isEmpty = true
@@ -153,17 +158,17 @@ const closeStatusCheck = async (
   const response = await octokit.rest.checks.update({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
-    check_run_id: checkId,
+    check_run_id: input.checkId,
     status: 'completed',
-    conclusion: shouldFail ? 'failure' : isEmpty ? 'skipped' : 'success',
+    conclusion: input.shouldFail ? 'failure' : isEmpty ? 'skipped' : 'success',
     completed_at: new Date().toISOString(),
     output: {
-      title: checkName,
+      title: input.checkName,
       summary: summary,
     }
   })
 
-  if(shouldFail) {
+  if(input.shouldFail && input.createSummary) {
     core.error('View for details: ' + response.data.html_url, {
       title: 'Action failed! See link for annotations'
     })
