@@ -32,7 +32,7 @@ const typescriptAnnotations = (
     }
   }).filter((item) => item !== false)
   
-  let annotations: AnnotationObject[] = []
+  const annotations: AnnotationObject[] = []
   formattedErrors.forEach((error) => {
     if(error === false) return
     annotations.push(error)
