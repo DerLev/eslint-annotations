@@ -26,7 +26,7 @@ import { getChangedFiles } from './pullRequest'
     statusCheckName,
     failedAttempts,
     failInPr,
-    pwd,
+    cwd,
     inPr
   } = getInputs()
 
@@ -77,7 +77,7 @@ import { getChangedFiles } from './pullRequest'
     if(eslintInput) {
       await Promise.all(eslintInputArray.map(async (file) => {
         const eslintFile: EslinJsonOutput[] = await JSON.parse(await (await fs.readFile(path.join('./', file))).toString())
-        const fileAnnotation = await eslintAnnotations(eslintFile, pwd, { prefix: eslintPrefix, allowedFiles: changedFiles })
+        const fileAnnotation = await eslintAnnotations(eslintFile, cwd, { prefix: eslintPrefix, allowedFiles: changedFiles })
 
         eslintOutput.highestSeverity = eslintOutput.highestSeverity < fileAnnotation.highestSeverity ?
           fileAnnotation.highestSeverity :

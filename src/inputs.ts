@@ -30,7 +30,7 @@ const getInputs = () => {
   const GITHUB_WORKSPACE = !process.env.GITHUB_WORKSPACE ?
     '/home/runner/work/eslint-annotations/eslint-annotations' :
     process.env.GITHUB_WORKSPACE
-  const pwd = GITHUB_WORKSPACE.substring(GITHUB_WORKSPACE.length -1, GITHUB_WORKSPACE.length) === '/' ?
+  const cwd = GITHUB_WORKSPACE.substring(GITHUB_WORKSPACE.length -1, GITHUB_WORKSPACE.length) === '/' ?
     GITHUB_WORKSPACE :
     GITHUB_WORKSPACE + '/'
 
@@ -51,7 +51,7 @@ const getInputs = () => {
     statusCheckName,
     failedAttempts,
     failInPr,
-    pwd,
+    cwd,
     inPr
   }
 }
