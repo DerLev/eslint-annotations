@@ -1,6 +1,8 @@
 # eslint-annotations
 
 [![CI](https://github.com/DerLev/eslint-annotations/actions/workflows/integration.yml/badge.svg?branch=main&event=push)](https://github.com/DerLev/eslint-annotations/actions/workflows/integration.yml)
+[![latest release](https://img.shields.io/github/v/release/DerLev/eslint-annotations?color=2ebc4f&labelColor=343b42&label=latest%20release&logo=github&logoColor=959DA5)](https://github.com/DerLev/eslint-annotations/releases/latest)
+
 
 ### Description
 
