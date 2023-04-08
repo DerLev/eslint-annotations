@@ -38,24 +38,22 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 > If you don't specify one of the filepaths the respective annotation script is skipped.  
 > Not specifying both makes this action just pass and not do anything.
 
-| Name                           | Description                                                            | Required | Default              |
-|--------------------------------|------------------------------------------------------------------------|----------|----------------------|
-| `eslint-report`                | Location of the ESLint report JSON file(s)                             | ✗        | None                 |
-| `eslint-annotation-prefix`     | Prefix for ESLint annotations                                          | ✗        | `ESLint Rule:`       |
-| `typescript-log`               | Location of Typescript log file(s)                                     | ✗        | None                 |
-| `typescript-annotation-prefix` | Prefix for Typescript annotations                                      | ✗        | `Typescript Error:`  |
-| `error-on-warn`                | Whether the action should fail when ESLint outputs a warning           | ✗        | `false`              |
-| `github-token`                 | GitHub token for accessing the API                                     | ✗        | None                 |
-| `create-status-check`          | Whether to create a seperate status check or not                       | ✗        | `true`               |
-| `status-check-name`            | Name of the status check created                                       | ✗        | `eslint-annotations` |
-| `failed-attempts`              | Comma seperated IDs of failed attempts *[look here](#failed-attempts)* | ✗        | None                 |
-| `fail-in-pr`                   | Whether the action should fail in a PR                                 | ✗        | `true`               |
-| `only-changed-in-pr`           | Whether only changed files should be annotated in a PR                 | ✗        | `true`               |
-
-<!-- TODO: Refine notice to include `only-change-in-pr` option for token requirement -->
+| Name                           | Description                                                            | Required | Default              | `GITHUB_TOKEN` |
+|--------------------------------|------------------------------------------------------------------------|----------|----------------------|----------------|
+| `eslint-report`                | Location of the ESLint report JSON file(s)                             | ✗        | None                 | ✗              |
+| `eslint-annotation-prefix`     | Prefix for ESLint annotations                                          | ✗        | `ESLint Rule:`       | ✗              |
+| `typescript-log`               | Location of Typescript log file(s)                                     | ✗        | None                 | ✗              |
+| `typescript-annotation-prefix` | Prefix for Typescript annotations                                      | ✗        | `Typescript Error:`  | ✗              |
+| `error-on-warn`                | Whether the action should fail when ESLint outputs a warning           | ✗        | `false`              | ✗              |
+| `github-token`                 | GitHub token for accessing the API                                     | ✗        | None                 | –              |
+| `create-status-check`          | Whether to create a seperate status check or not                       | ✗        | `true`               | ✓              |
+| `status-check-name`            | Name of the status check created                                       | ✗        | `eslint-annotations` | ✓              |
+| `failed-attempts`              | Comma seperated IDs of failed attempts *[look here](#failed-attempts)* | ✗        | None                 | ✓              |
+| `fail-in-pr`                   | Whether the action should fail in a PR                                 | ✗        | `true`               | ✗              |
+| `only-changed-in-pr`           | Whether only changed files should be annotated in a PR                 | ✗        | `true`               | ✓              |
 
 > **Note**  
-> Everything status check related requires the `github-token` to be set and have full access to the `checks` permission claim
+> Everything that has a check in the `GITHUB_TOKEN` column needs the `github-token` option set with *[the right permissions](#permissions-the-action-needs)*
 
 ### Setup
 
@@ -77,8 +75,6 @@ The following example uses the scripts of the `package.json` shown below and
 }
 ```
 
----
-
 `.github/workflows/integration.yml`
 
 ```yaml
@@ -91,10 +87,12 @@ jobs:
     name: Lint & Type Check
     runs-on: ubuntu-latest
 
-    # this line is for the GITHUB_TOKEN
-    # so the action always has access to the checks claim
+    # this is for the GITHUB_TOKEN's permissions so the action always has
+    # access to the checks and pull request claim
+    # this is not needed in this example because we don't use status checks here
     permissions:
       checks: write
+      pull-requests: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -173,10 +171,25 @@ jobs:
           failed-attempts: ${{ inputs.failed_attempts }}
 ```
 
+### Permissions the action needs
+
+If you configure this action with a `GITHUB_TOKEN` you will need to assign the 
+right permissions to it. In order to create status checks and list all changed 
+files in a pull request the action needs these permissions set in the YAML of 
+the workflow or job:
+
+```yaml
+permissions:
+  checks: write
+  pull-requests: read
+```
+
 ### Support
 
 Pull Requests and Issues with bugs, new features or even typos in the 
-documentation are always welcome.
+documentation are always welcome. Please also look at the discussions of this 
+repo.  
+There is also a list of untested features [here](https://github.com/DerLev/eslint-annotations/discussions/64) you can contribute to.
 
 #### Supported versions
 
