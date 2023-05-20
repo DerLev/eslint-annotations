@@ -9,6 +9,8 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'workflow/test')
     permissions:
       checks: write
+      pull-requests: read
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3

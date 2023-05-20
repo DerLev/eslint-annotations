@@ -17,6 +17,8 @@ jobs:
     if: ${{ !startsWith(github.event.head_commit.message, 'wip:') }}
     permissions:
       checks: write
+      pull-requests: read
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
