@@ -210,10 +210,10 @@ There is also a list of untested features [here](https://github.com/DerLev/eslin
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `v1.3.0`  | **npm**         | :white_check_mark:   |
+| `v1.4.0`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>v1.3.0` | *any*           | :x:                  |
+| `>v1.4.0` | *any*           | :x:                  |
 
 ---
 
