@@ -168,7 +168,10 @@ const closeStatusCheck = async (
     }
   })
 
-  if(input.shouldFail && input.createSummary) {
+  // Do not create a summary
+  if(!input.createSummary) return response.data.id
+
+  if(input.shouldFail) {
     core.error('View for details: ' + response.data.html_url, {
       title: 'Action failed! See link for annotations'
     })
