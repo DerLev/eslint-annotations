@@ -191,7 +191,6 @@ import { getChangedFiles } from './pullRequest'
     }
 
     if(highestSeverity >= errorOnWarn) {
-      console.log('error-on-warn')
       if(inPr && !failInPr) {
         return
       } else {
