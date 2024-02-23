@@ -72,7 +72,7 @@ const updateStatusCheck = async (
       path: ann.file,
       start_line: ann.line,
       end_line: ann.endLine ? ann.endLine : ann.line,
-      annotation_level: annotationLevelConversion(ann.severity),
+      annotation_level: annotationLevelConversion(ann.severity) as ReturnType<typeof annotationLevelConversion>,
       message: ann.message,
       title: ann.title
     }

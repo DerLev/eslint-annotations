@@ -19,14 +19,14 @@
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@actions/github": "^5.1.1"
+    "@actions/github": "^6.0.0"
   },
   "devDependencies": {
     "@octokit/webhooks-definitions": "^3.67.3",
-    "@tsconfig/node16": "^16.1.0",
+    "@tsconfig/node20": "^20.1.2",
     "@types/node": "^20.4.5",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
     "concurrently": "^8.2.0",
     "eslint": "^8.46.0",
     "eslint-watch": "^8.0.0",
