@@ -28,7 +28,7 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 > the action won't do anything
 
 ```yaml
-- uses: DerLev/eslint-annotations@v1
+- uses: DerLev/eslint-annotations@v2
   with:
     eslint-report: eslint_report.json
     typescript-log: typescript.log
@@ -98,11 +98,11 @@ jobs:
       pull-requests: read
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Nodejs environment
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
           cache: "yarn"
       - name: Install Dependencies
         run: yarn --frozen-lockfile
@@ -128,7 +128,7 @@ jobs:
         continue-on-error: true
 
       - name: Annotate Code
-        uses: DerLev/eslint-annotations@v1
+        uses: DerLev/eslint-annotations@v2
         with:
           eslint-report: eslint_report.json
           typescript-log: typescript.log
@@ -210,10 +210,10 @@ There is also a list of untested features [here](https://github.com/DerLev/eslin
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `v1.4.1`  | **npm**         | :white_check_mark:   |
+| `v2.0.0`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>v1.4.1` | *any*           | :x:                  |
+| `>v2.0.0` | *any*           | :x:                  |
 
 ---
 
