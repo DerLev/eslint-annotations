@@ -37,7 +37,7 @@ jobs:
           pathspec_error_handling: exitAtEnd
           new_branch: gh-actions/build-${{ github.run_number }}-${{ github.run_attempt }}
       - name: Open Pull Request
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const { repo, owner } = context.repo;
