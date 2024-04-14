@@ -23,7 +23,7 @@ make the ultimate GitHub Action that suits my needs.
 This snippet just contains the minimum for annotating code through Typescript 
 and ESLint. Look at [Setup](#setup) for a full workflow.
 
-> **Warning**  
+> [!WARNING]
 > If you don't specify either `eslint-report` or `typescript-log`
 > the action won't do anything
 
@@ -36,7 +36,7 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 
 ### Options
 
-> **Note**  
+> [!IMPORTANT]
 > If you don't specify one of the filepaths the respective annotation script is skipped.  
 > Not specifying both makes this action just pass and not do anything.
 
@@ -55,7 +55,7 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 | `only-changed-in-pr`           | Whether only changed files should be annotated in a PR                      | ✗        | `true`               | ✓              |
 | `add-notice-with-url`          | Toggle the creation of the summary containing the link to the status check  | ✗        | `true`               | ✓              |
 
-> **Note**  
+> [!NOTE]
 > Everything that has a check in the `GITHUB_TOKEN` column needs the `github-token` option set with *[the right permissions](#permissions-the-action-needs)*
 
 ### Setup
@@ -63,7 +63,7 @@ and ESLint. Look at [Setup](#setup) for a full workflow.
 The following example uses the scripts of the `package.json` shown below and 
 **yarn** as a package manager.
 
-> **Note**  
+> [!NOTE]
 > When using npm you need to use an argument seperator to tell npm to pass on the args to the script:  
 > `npm run lint -- --output-file eslint_report.json --format json`
 
@@ -169,7 +169,7 @@ that can be manually triggered to resolve those running checks.
 The input will be the IDs of status checks seperated by a comma 
 (e.g. `12345678901, 23456789012` or `12345678901,23456789012`)
 
-> **Note**  
+> [!TIP]
 > To get a check ID you will need to go to its respective page on GitHub:  
 > ```
 > https://github.com/DerLev/eslint-annotations/runs/12345678901
