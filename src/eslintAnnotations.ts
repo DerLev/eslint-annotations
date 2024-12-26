@@ -28,7 +28,7 @@ const eslintAnnotations = (
 
   const annotations: AnnotationObject[] = []
   filteredReport.forEach((item) => {
-    if(item == false) return
+    if(!item) return
     item.messages.forEach((msg) => {
       annotations.push({
         severity: msg.severity,
@@ -45,7 +45,7 @@ const eslintAnnotations = (
     let highest = 0
 
     filteredReport.forEach((item) => {
-      if(item == false) return
+      if(!item) return
       item.messages.forEach((msg) => {
         if(msg.severity >= highest) highest = msg.severity
       })

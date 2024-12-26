@@ -34,7 +34,7 @@ const typescriptAnnotations = (
   
   const annotations: AnnotationObject[] = []
   formattedErrors.forEach((error) => {
-    if(error === false) return
+    if(!error) return
     annotations.push(error)
   })
 
