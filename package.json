@@ -24,7 +24,7 @@
   "devDependencies": {
     "@octokit/webhooks-definitions": "^3.67.3",
     "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^22.10.3",
+    "@types/node": "^22.13.14",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "concurrently": "^9.1.2",
