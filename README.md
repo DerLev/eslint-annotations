@@ -102,7 +102,7 @@ jobs:
       - name: Setup Nodejs environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: "yarn"
       - name: Install Dependencies
         run: yarn --frozen-lockfile
@@ -210,10 +210,10 @@ There is also a list of untested features [here](https://github.com/DerLev/eslin
 
 | Version   | Package Manager | Supported            |
 |-----------|-----------------|----------------------|
-| `v2.0.4`  | **npm**         | :white_check_mark:   |
+| `v2.1.0`  | **npm**         | :white_check_mark:   |
 |           | **yarn**        | :white_check_mark:   |
 |           | **pnpm**        | :warning: Not tested |
-| `>v2.0.4` | *any*           | :x:                  |
+| `>v2.1.0` | *any*           | :x:                  |
 
 ---
 
