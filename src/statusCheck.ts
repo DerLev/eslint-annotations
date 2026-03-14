@@ -100,7 +100,7 @@ const updateStatusCheck = async (
         }
       })
       promises.push(promise)
-    } catch(err) {
+    } catch {
       core.error(`Error adding annotations (ID: ${checkId})`, {
         title: `Error in batch ${batch} of ${annotations.type} annotations`
       })
