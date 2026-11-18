@@ -18,6 +18,36 @@ const annotationLevelConversion = (severity: number) => {
   }
 }
 
+const notFoundRetryDelaysMs = [1000, 2000, 4000, 8000];
+
+const isNotFoundError = (err: unknown) =>
+  typeof err === "object" &&
+  err !== null &&
+  "status" in err &&
+  err.status === 404;
+
+/**
+ * Run a check run request, retrying while GitHub responds with 404.
+ * A newly created check run can briefly 404 on update because GitHub has not
+ * finished replicating it. Waits up to 15s in total, then rethrows the last error.
+ */
+const retryOnNotFound = async <P extends Promise<unknown>>(
+  request: () => P,
+): Promise<Awaited<P>> => {
+  for (const delayMs of notFoundRetryDelaysMs) {
+    try {
+      return await request();
+    } catch (err) {
+      if (!isNotFoundError(err)) {
+        throw err;
+      }
+      core.info(`Check run not found, retrying in ${delayMs}ms`);
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+  return await request();
+};
+
 /**
  * Create a status check for code annotations
  * @param token GitHub token
